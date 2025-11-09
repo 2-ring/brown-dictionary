@@ -1,3 +1,24 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-ud-navy: #1D2439;
+  --color-ud-navy-light: #2C3550;
+  --color-ud-navy-dark: #151A2B;
+  --color-ud-blue: #134FE6;
+  --color-ud-blue-bright: #2F7EFF;
+  --color-ud-blue-light: #4A90FF;
+  --color-ud-text: #E8ECF4;
+  --color-ud-text-muted: #A6B0C3;
+  --color-ud-border: #3D4A66;
+  --color-ud-share: #6B7894;
+
+  --font-family-sans: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-ud-navy-dark);
+    color: var(--color-ud-text);
+    font-family: var(--font-family-sans);
+  }
+}
