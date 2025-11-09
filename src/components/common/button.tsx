@@ -18,9 +18,9 @@ export const Button = ({
   const baseStyles = 'px-6 py-2.5 rounded-full font-medium transition-colors';
 
   const variants = {
-    primary: 'bg-ud-blue hover:bg-ud-blue-bright text-white',
-    secondary: 'bg-ud-navy-light hover:bg-ud-navy text-ud-text',
-    outline: 'border-2 border-ud-border hover:border-ud-blue text-ud-text',
+    primary: 'bg-primary hover:bg-primary-hover text-white',
+    secondary: 'bg-card-secondary hover:bg-background text-text',
+    outline: 'border-2 border-border hover:border-primary text-text',
   };
 
   return (

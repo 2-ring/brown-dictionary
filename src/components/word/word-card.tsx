@@ -15,11 +15,11 @@ export const WordCard = ({ word, showAllDefinitions = false }: WordCardProps) =>
     : word.definitions.slice(0, 1);
 
   return (
-    <div className="bg-ud-navy rounded-xl border border-ud-border/50 overflow-hidden">
+    <div className="bg-card rounded-xl overflow-hidden">
       <div className="p-8">
         <div className="flex items-start justify-between mb-2">
           <Link to={`/word/${word.slug}`} className="flex-1">
-            <h2 className="text-4xl font-bold text-ud-blue-light hover:underline">
+            <h2 className="text-4xl font-bold text-primary hover:underline">
               {word.term}
             </h2>
           </Link>
@@ -43,10 +43,10 @@ export const WordCard = ({ word, showAllDefinitions = false }: WordCardProps) =>
         </div>
 
         {!showAllDefinitions && word.definitions.length > 1 && (
-          <div className="mt-6 pt-6 border-t border-ud-border/50">
+          <div className="mt-6 pt-6">
             <Link
               to={`/word/${word.slug}`}
-              className="text-ud-blue-light hover:underline text-sm"
+              className="text-primary hover:underline text-sm"
             >
               View {word.definitions.length - 1} more definition{word.definitions.length - 1 !== 1 ? 's' : ''}
             </Link>

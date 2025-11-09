@@ -13,7 +13,7 @@ export const RelatedWords = ({ text }: RelatedWordsProps) => {
           <Link
             key={index}
             to={`/word/${word.toLowerCase()}`}
-            className="text-ud-blue-light hover:underline"
+            className="text-primary hover:underline"
           >
             {word}
           </Link>
@@ -24,7 +24,7 @@ export const RelatedWords = ({ text }: RelatedWordsProps) => {
   };
 
   return (
-    <div className="text-ud-text-muted text-sm">
+    <div className="text-text-muted text-sm">
       {renderTextWithLinks(text)}
     </div>
   );

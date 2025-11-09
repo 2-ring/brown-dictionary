@@ -3,16 +3,16 @@ import { Button } from '../common/button';
 
 export const Banner = () => {
   return (
-    <div className="bg-ud-navy-light rounded-xl border border-ud-border/50 p-10 flex items-center justify-between">
+    <div className="bg-card-secondary rounded-xl border border-border/50 p-10 flex items-center justify-between">
       <div>
         <h3 className="text-2xl font-bold leading-tight tracking-tight">
-          <span className="text-ud-blue">URBAN</span>
+          <span className="text-primary">URBAN</span>
           <br />
-          <span className="text-ud-blue">DICTIONARY</span>
+          <span className="text-primary">DICTIONARY</span>
           <br />
-          <span className="text-ud-blue">IS WRITTEN</span>
+          <span className="text-primary">IS WRITTEN</span>
           <br />
-          <span className="text-ud-blue">BY YOU</span>
+          <span className="text-primary">BY YOU</span>
         </h3>
       </div>
 

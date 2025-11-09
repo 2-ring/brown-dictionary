@@ -9,7 +9,7 @@ export const AlphabetGrid = () => {
         <Link
           key={letter}
           to={`/browse/${letter}`}
-          className="aspect-square bg-ud-navy-light hover:bg-ud-navy border border-ud-border rounded flex items-center justify-center text-2xl font-bold text-ud-text transition-colors"
+          className="aspect-square bg-card-secondary hover:bg-background border border-border rounded flex items-center justify-center text-2xl font-bold text-text transition-colors"
         >
           {letter}
         </Link>

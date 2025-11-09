@@ -26,7 +26,7 @@ export const SearchResults = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-ud-text-muted">Searching...</div>
+        <div className="text-text-muted">Searching...</div>
       </div>
     );
   }
@@ -34,10 +34,10 @@ export const SearchResults = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-ud-text mb-2">
+        <h1 className="text-2xl font-bold text-text mb-2">
           Search results for "{query}"
         </h1>
-        <p className="text-ud-text-muted">
+        <p className="text-text-muted">
           {words.length} {words.length === 1 ? 'result' : 'results'} found
         </p>
       </div>
@@ -46,10 +46,10 @@ export const SearchResults = () => {
         <WordFeed words={words} />
       ) : (
         <div className="text-center py-12">
-          <p className="text-ud-text-muted text-lg mb-4">
+          <p className="text-text-muted text-lg mb-4">
             No results found for "{query}"
           </p>
-          <p className="text-ud-text-muted">
+          <p className="text-text-muted">
             Try searching for a different term
           </p>
         </div>

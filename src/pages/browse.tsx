@@ -28,7 +28,7 @@ export const Browse = () => {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <Link to="/" className="text-ud-blue-light hover:underline mb-4 inline-block">
+          <Link to="/" className="text-primary hover:underline mb-4 inline-block">
             ← Home
           </Link>
         </div>
@@ -41,18 +41,18 @@ export const Browse = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <Link to="/browse" className="text-ud-blue-light hover:underline mb-4 inline-block">
+        <Link to="/browse" className="text-primary hover:underline mb-4 inline-block">
           ← Back to browse
         </Link>
 
-        <h1 className="text-4xl font-bold text-ud-blue-light mt-4 mb-6">
+        <h1 className="text-4xl font-bold text-primary mt-4 mb-6">
           Words in {letter.toUpperCase()}
         </h1>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-ud-text-muted">Loading...</div>
+          <div className="text-text-muted">Loading...</div>
         </div>
       ) : words.length > 0 ? (
         <>
@@ -64,13 +64,13 @@ export const Browse = () => {
             <Button variant="outline">3</Button>
             <Button variant="outline">4</Button>
             <Button variant="outline">5</Button>
-            <span className="self-center text-ud-text-muted mx-2">...</span>
+            <span className="self-center text-text-muted mx-2">...</span>
             <Button variant="outline">Next »</Button>
             <Button variant="outline">Last »</Button>
           </div>
         </>
       ) : (
-        <div className="text-center text-ud-text-muted py-12">
+        <div className="text-center text-text-muted py-12">
           No words found starting with {letter.toUpperCase()}
         </div>
       )}

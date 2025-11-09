@@ -1,29 +1,29 @@
 export const Footer = () => {
   return (
-    <footer className="bg-ud-navy border-t border-ud-border mt-auto">
+    <footer className="bg-background border-t border-border mt-auto">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex flex-wrap gap-3 text-xs text-ud-text-muted justify-center">
+        <div className="flex flex-wrap gap-3 text-xs text-text-muted justify-center">
           <span>© 1999-2025 Urban Dictionary ®</span>
           <span>•</span>
-          <a href="#" className="hover:text-ud-text">ads</a>
+          <a href="#" className="hover:text-text">ads</a>
           <span>•</span>
-          <a href="#" className="hover:text-ud-text">help</a>
+          <a href="#" className="hover:text-text">help</a>
           <span>•</span>
-          <a href="#" className="hover:text-ud-text">privacy</a>
+          <a href="#" className="hover:text-text">privacy</a>
           <span>•</span>
-          <a href="#" className="hover:text-ud-text">terms of service</a>
+          <a href="#" className="hover:text-text">terms of service</a>
           <span>•</span>
-          <a href="#" className="hover:text-ud-text">dmca</a>
+          <a href="#" className="hover:text-text">dmca</a>
           <span>•</span>
-          <a href="#" className="hover:text-ud-text">accessibility statement</a>
+          <a href="#" className="hover:text-text">accessibility statement</a>
           <span>•</span>
-          <a href="#" className="hover:text-ud-text">report a bug</a>
+          <a href="#" className="hover:text-text">report a bug</a>
           <span>•</span>
-          <a href="#" className="hover:text-ud-text">information collection notice</a>
+          <a href="#" className="hover:text-text">information collection notice</a>
           <span>•</span>
-          <a href="#" className="hover:text-ud-text">system status</a>
+          <a href="#" className="hover:text-text">system status</a>
           <span>•</span>
-          <a href="#" className="hover:text-ud-text">data subject access request</a>
+          <a href="#" className="hover:text-text">data subject access request</a>
         </div>
       </div>
     </footer>

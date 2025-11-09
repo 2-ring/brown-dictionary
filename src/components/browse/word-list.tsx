@@ -23,7 +23,7 @@ export const WordList = ({ words }: WordListProps) => {
             <Link
               key={word.slug}
               to={`/word/${word.slug}`}
-              className="block text-ud-text hover:text-ud-blue-light transition-colors"
+              className="block text-text hover:text-primary transition-colors"
             >
               {word.term}
             </Link>

@@ -25,7 +25,7 @@ export const WordDetail = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-ud-text-muted">Loading...</div>
+        <div className="text-text-muted">Loading...</div>
       </div>
     );
   }
@@ -34,8 +34,8 @@ export const WordDetail = () => {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-ud-text mb-4">Word not found</h1>
-          <p className="text-ud-text-muted">
+          <h1 className="text-3xl font-bold text-text mb-4">Word not found</h1>
+          <p className="text-text-muted">
             The word you're looking for doesn't exist in our dictionary.
           </p>
         </div>

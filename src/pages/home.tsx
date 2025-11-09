@@ -22,7 +22,7 @@ export const Home = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-ud-text-muted">Loading...</div>
+        <div className="text-text-muted">Loading...</div>
       </div>
     );
   }

@@ -17,24 +17,24 @@ export const AddDefinition = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-ud-navy rounded-lg border border-ud-border p-8">
+      <div className="bg-background rounded-lg border border-border p-8">
         <div className="mb-8 text-center">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-ud-blue rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-24 h-24 bg-primary rounded-full mb-4">
             <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-ud-blue-light mb-2">
+          <h1 className="text-3xl font-bold text-primary mb-2">
             URBAN DICTIONARY IS WRITTEN BY YOU
           </h1>
-          <p className="text-ud-text-muted">
+          <p className="text-text-muted">
             Define a Word
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="term" className="block text-ud-text font-medium mb-2">
+            <label htmlFor="term" className="block text-text font-medium mb-2">
               Word
             </label>
             <input
@@ -42,14 +42,14 @@ export const AddDefinition = () => {
               id="term"
               value={formData.term}
               onChange={(e) => setFormData({ ...formData, term: e.target.value })}
-              className="w-full bg-ud-navy-light text-ud-text px-4 py-3 rounded border border-ud-border focus:outline-none focus:border-ud-blue"
+              className="w-full bg-card-secondary text-text px-4 py-3 rounded border border-border focus:outline-none focus:border-primary"
               placeholder="Enter the word or phrase"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="definition" className="block text-ud-text font-medium mb-2">
+            <label htmlFor="definition" className="block text-text font-medium mb-2">
               Definition
             </label>
             <textarea
@@ -57,14 +57,14 @@ export const AddDefinition = () => {
               value={formData.definition}
               onChange={(e) => setFormData({ ...formData, definition: e.target.value })}
               rows={6}
-              className="w-full bg-ud-navy-light text-ud-text px-4 py-3 rounded border border-ud-border focus:outline-none focus:border-ud-blue resize-none"
+              className="w-full bg-card-secondary text-text px-4 py-3 rounded border border-border focus:outline-none focus:border-primary resize-none"
               placeholder="Write the definition"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="example" className="block text-ud-text font-medium mb-2">
+            <label htmlFor="example" className="block text-text font-medium mb-2">
               Example
             </label>
             <textarea
@@ -72,7 +72,7 @@ export const AddDefinition = () => {
               value={formData.example}
               onChange={(e) => setFormData({ ...formData, example: e.target.value })}
               rows={6}
-              className="w-full bg-ud-navy-light text-ud-text px-4 py-3 rounded border border-ud-border focus:outline-none focus:border-ud-blue resize-none"
+              className="w-full bg-card-secondary text-text px-4 py-3 rounded border border-border focus:outline-none focus:border-primary resize-none"
               placeholder="Use the word in a sentence or provide context"
               required
             />
