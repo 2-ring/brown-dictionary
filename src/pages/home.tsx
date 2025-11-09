@@ -3,7 +3,6 @@ import type { Word } from '../database/db';
 import { getWords } from '../database/db';
 import { WordFeed } from '../components/feed/word-feed';
 import { Button } from '../components/common/button';
-import { Banner } from '../components/layout/banner';
 
 export const Home = () => {
   const [words, setWords] = useState<Word[]>([]);
@@ -29,10 +28,6 @@ export const Home = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <Banner />
-      </div>
-
       <div className="mb-8">
         <WordFeed words={words} />
       </div>

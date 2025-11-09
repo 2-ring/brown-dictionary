@@ -27,9 +27,7 @@ export const WordCard = ({ word, showAllDefinitions = false }: WordCardProps) =>
         </div>
 
         {word.definitions[0] && (
-          <div className="mb-6">
-            <RelatedWords text={word.definitions[0].text} />
-          </div>
+          <RelatedWords text={word.definitions[0].text} />
         )}
 
         <div>

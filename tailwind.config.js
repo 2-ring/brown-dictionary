@@ -15,6 +15,7 @@ export default {
         text: '#E8ECF4',
         'text-muted': '#8997AB',
         border: '#353D50',
+        highlight: '#4DAFFF',
       },
       fontFamily: {
         'sans': ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],

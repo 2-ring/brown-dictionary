@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import type { Definition } from '../../database/db';
 import { VoteButtons } from './vote-buttons';
+import { Link } from 'react-router-dom';
 
 interface DefinitionItemProps {
   definition: Definition;
@@ -14,24 +14,6 @@ export const DefinitionItem = ({ definition, termSlug }: DefinitionItemProps) =>
       day: 'numeric',
       year: 'numeric',
     }).format(date);
-  };
-
-  const renderTextWithLinks = (text: string) => {
-    const words = text.split(/\b/);
-    return words.map((word, index) => {
-      if (word.match(/^[a-zA-Z]+$/)) {
-        return (
-          <Link
-            key={index}
-            to={`/word/${word.toLowerCase()}`}
-            className="text-primary hover:underline"
-          >
-            {word}
-          </Link>
-        );
-      }
-      return word;
-    });
   };
 
   return (

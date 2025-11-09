@@ -5,27 +5,36 @@ interface RelatedWordsProps {
 }
 
 export const RelatedWords = ({ text }: RelatedWordsProps) => {
-  const renderTextWithLinks = (text: string) => {
+  // Extract unique words from the definition text (words longer than 2 chars)
+  const extractWords = (text: string) => {
     const words = text.split(/\b/);
-    return words.map((word, index) => {
+    const uniqueWords = new Set<string>();
+
+    words.forEach(word => {
       if (word.match(/^[a-zA-Z]+$/) && word.length > 2) {
-        return (
+        uniqueWords.add(word.toLowerCase());
+      }
+    });
+
+    return Array.from(uniqueWords).slice(0, 6); // Limit to first 6 words
+  };
+
+  const relatedWords = extractWords(text);
+
+  return (
+    <div className="text-text-muted text-base mb-4">
+      {relatedWords.map((word, index) => (
+        <span key={index}>
           <Link
-            key={index}
-            to={`/word/${word.toLowerCase()}`}
+            to={`/word/${word}`}
             className="text-primary hover:underline"
           >
             {word}
           </Link>
-        );
-      }
-      return <span key={index}>{word}</span>;
-    });
-  };
-
-  return (
-    <div className="text-text-muted text-sm">
-      {renderTextWithLinks(text)}
+          {index < relatedWords.length - 1 && <span>. </span>}
+        </span>
+      ))}
+      {relatedWords.length > 0 && <span>.....</span>}
     </div>
   );
 };
