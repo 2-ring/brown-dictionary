@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Definition } from '../../database/db';
+import type { Definition } from '../../database/db';
 import { VoteButtons } from './vote-buttons';
 
 interface DefinitionItemProps {
@@ -35,16 +35,16 @@ export const DefinitionItem = ({ definition, termSlug }: DefinitionItemProps) =>
   };
 
   return (
-    <div className="py-6 border-b border-ud-border last:border-b-0">
-      <div className="mb-4">
-        <p className="text-ud-text leading-relaxed whitespace-pre-wrap">
+    <div className="py-6 border-b border-ud-border/50 last:border-b-0">
+      <div className="mb-5">
+        <p className="text-ud-text leading-relaxed whitespace-pre-wrap text-base">
           {definition.text}
         </p>
       </div>
 
       {definition.example && (
-        <div className="mb-4 pl-4 border-l-2 border-ud-border">
-          <p className="text-ud-text-muted leading-relaxed whitespace-pre-wrap italic">
+        <div className="mb-5 pl-4 border-l-4 border-ud-border/30">
+          <p className="text-ud-text-muted leading-relaxed whitespace-pre-wrap italic text-base">
             {definition.example}
           </p>
         </div>
@@ -62,11 +62,11 @@ export const DefinitionItem = ({ definition, termSlug }: DefinitionItemProps) =>
         <div className="flex items-center gap-3">
           <VoteButtons upvotes={definition.upvotes} downvotes={definition.downvotes} />
 
-          <button className="px-4 py-2 border-2 border-ud-border rounded-full hover:border-ud-blue transition-colors flex items-center gap-2">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button className="px-4 py-2.5 border-2 border-ud-border/60 rounded-full hover:border-ud-blue transition-colors flex items-center gap-2">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
             </svg>
-            <span className="text-sm">FLAG</span>
+            <span className="text-xs font-medium">FLAG</span>
           </button>
         </div>
       </div>

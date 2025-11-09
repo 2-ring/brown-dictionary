@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Word, getWords } from '../database/db';
+import type { Word } from '../database/db';
+import { getWords } from '../database/db';
 import { WordFeed } from '../components/feed/word-feed';
 import { Button } from '../components/common/button';
 import { Banner } from '../components/layout/banner';

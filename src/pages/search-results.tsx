@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Word, searchWords } from '../database/db';
+import type { Word } from '../database/db';
+import { searchWords } from '../database/db';
 import { WordFeed } from '../components/feed/word-feed';
 
 export const SearchResults = () => {

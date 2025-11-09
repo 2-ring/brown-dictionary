@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Word, getWordBySlug } from '../database/db';
+import type { Word } from '../database/db';
+import { getWordBySlug } from '../database/db';
 import { WordCard } from '../components/word/word-card';
 import { Button } from '../components/common/button';
 

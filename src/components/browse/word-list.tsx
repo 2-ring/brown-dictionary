@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Word } from '../../database/db';
+import type { Word } from '../../database/db';
 
 interface WordListProps {
   words: Word[];

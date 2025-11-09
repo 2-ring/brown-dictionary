@@ -8,13 +8,13 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-ud-navy border-b border-ud-border sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
-          <Link to="/" className="flex items-center">
-            <div className="text-2xl font-bold">
+      <nav className="bg-ud-navy border-b border-ud-border/50 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-4">
+          <Link to="/" className="flex items-center flex-shrink-0">
+            <div className="text-2xl font-bold leading-none">
               <span className="text-ud-text">ur</span>
               <span className="text-ud-blue">ban</span>
-              <div className="text-[10px] text-ud-blue tracking-wider">DICTIONARY</div>
+              <div className="text-[9px] text-ud-blue tracking-widest mt-0.5">DICTIONARY</div>
             </div>
           </Link>
 

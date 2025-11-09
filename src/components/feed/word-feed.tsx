@@ -1,4 +1,4 @@
-import { Word } from '../../database/db';
+import type { Word } from '../../database/db';
 import { WordCard } from '../word/word-card';
 
 interface WordFeedProps {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Word, getWordsByLetter } from '../database/db';
+import type { Word } from '../database/db';
+import { getWordsByLetter } from '../database/db';
 import { AlphabetGrid } from '../components/browse/alphabet-grid';
 import { WordList } from '../components/browse/word-list';
 import { Button } from '../components/common/button';
