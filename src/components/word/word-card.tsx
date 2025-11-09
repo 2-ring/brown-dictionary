@@ -3,7 +3,6 @@ import { Word } from '../../database/db';
 import { DefinitionItem } from './definition-item';
 import { ShareButton } from '../common/share-button';
 import { RelatedWords } from './related-words';
-import { MerchBanner } from './merch-banner';
 
 interface WordCardProps {
   word: Word;
@@ -52,8 +51,6 @@ export const WordCard = ({ word, showAllDefinitions = false }: WordCardProps) =>
           </div>
         )}
       </div>
-
-      <MerchBanner term={word.term} />
     </div>
   );
 };
