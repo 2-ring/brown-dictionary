@@ -9,12 +9,11 @@ export const Navbar = () => {
   return (
     <>
       <nav className="bg-navbar border-b border-border/50 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-4">
           <Link to="/" className="flex items-center flex-shrink-0">
-            <div className="text-2xl font-bold leading-none">
-              <span className="text-text">ur</span>
-              <span className="text-primary">ban</span>
-              <div className="text-[9px] text-primary tracking-widest mt-0.5">DICTIONARY</div>
+            <div className="text-2xl font-bold leading-none flex flex-col justify-center">
+              <span className="text-text">ur<span className="text-primary">ban</span></span>
+              <div className="text-[9px] text-primary tracking-widest -mt-0.5">DICTIONARY</div>
             </div>
           </Link>
 

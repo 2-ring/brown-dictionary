@@ -20,7 +20,8 @@ export default {
         navbar: '#1D2733',
       },
       fontFamily: {
-        'sans': ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        'sans': ['Source Sans 3', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        'serif': ['Lora', 'Georgia', 'serif'],
       },
     },
   },
