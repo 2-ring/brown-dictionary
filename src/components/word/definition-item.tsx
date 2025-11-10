@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom';
 interface DefinitionItemProps {
   definition: Definition;
   termSlug?: string;
+  isFirst?: boolean;
 }
 
-export const DefinitionItem = ({ definition, termSlug }: DefinitionItemProps) => {
+export const DefinitionItem = ({ definition, termSlug, isFirst = false }: DefinitionItemProps) => {
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
       month: 'long',
@@ -17,22 +18,22 @@ export const DefinitionItem = ({ definition, termSlug }: DefinitionItemProps) =>
   };
 
   return (
-    <div className="py-6 border-b border-border/50 last:border-b-0">
-      <div className="mb-5">
+    <div className={`pb-6 border-b border-border/50 last:border-b-0 ${isFirst ? 'pt-3' : 'pt-6'}`}>
+      <div className="mb-3">
         <p className="text-text leading-relaxed whitespace-pre-wrap text-lg">
           {definition.text}
         </p>
       </div>
 
       {definition.example && (
-        <div className="mb-5">
+        <div className="mb-3">
           <p className="text-text leading-relaxed whitespace-pre-wrap italic text-lg">
             {definition.example}
           </p>
         </div>
       )}
 
-      <div className="text-lg text-text font-bold mb-4">
+      <div className="text-lg text-text font-bold mb-6">
         <span>by </span>
         <Link to="#" className="text-highlight hover:underline">
           {definition.author}

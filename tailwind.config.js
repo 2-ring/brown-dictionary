@@ -17,7 +17,7 @@ export default {
         'text-muted': '#8997AB',
         border: '#353D50',
         highlight: '#4DAFFF',
-        navbar: '#1D2733',
+        navbar: '#212936',
       },
       fontFamily: {
         'sans': ['Source Sans 3', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
