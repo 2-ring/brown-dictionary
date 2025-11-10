@@ -35,7 +35,7 @@ export const DefinitionItem = ({ definition, termSlug }: DefinitionItemProps) =>
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="text-sm text-text-muted">
           <span>by </span>
-          <Link to="#" className="text-link hover:underline">
+          <Link to="#" className="text-highlight hover:underline">
             {definition.author}
           </Link>
           <span> {formatDate(definition.createdAt)}</span>

@@ -33,7 +33,7 @@ export const RelatedWords = ({ text }: RelatedWordsProps) => {
         <span key={index}>
           <Link
             to={`/word/${word}`}
-            className="text-link hover:underline"
+            className="text-highlight hover:underline"
           >
             {word}
           </Link>
