@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import type { Word } from '../../database/db';
 import { DefinitionItem } from './definition-item';
 import { ShareButton } from '../common/share-button';
-import { RelatedWords } from './related-words';
 
 interface WordCardProps {
   word: Word;
@@ -23,12 +22,11 @@ export const WordCard = ({ word, showAllDefinitions = false }: WordCardProps) =>
               {word.term}
             </h2>
           </Link>
-          <ShareButton />
+          <ShareButton
+            url={`${window.location.origin}/word/${word.slug}`}
+            title={`${word.term} - Brown Dictionary`}
+          />
         </div>
-
-        {word.definitions[0] && (
-          <RelatedWords text={word.definitions[0].text} />
-        )}
 
         <div>
           {displayDefinitions.map((definition, index) => (

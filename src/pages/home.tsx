@@ -3,6 +3,7 @@ import type { Word } from '../database/db';
 import { getWords } from '../database/db';
 import { WordFeed } from '../components/feed/word-feed';
 import { Button } from '../components/common/button';
+import { Spinner } from '../components/common/spinner';
 
 export const Home = () => {
   const [words, setWords] = useState<Word[]>([]);
@@ -21,7 +22,7 @@ export const Home = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-text-muted">Loading...</div>
+        <Spinner />
       </div>
     );
   }
