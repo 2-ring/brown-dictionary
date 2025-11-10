@@ -25,8 +25,8 @@ export const DefinitionItem = ({ definition, termSlug }: DefinitionItemProps) =>
       </div>
 
       {definition.example && (
-        <div className="mb-5 pl-4 border-l-4 border-border/30">
-          <p className="text-text-muted leading-relaxed whitespace-pre-wrap italic text-base">
+        <div className="mb-5">
+          <p className="text-text leading-relaxed whitespace-pre-wrap italic text-base">
             {definition.example}
           </p>
         </div>
@@ -35,7 +35,7 @@ export const DefinitionItem = ({ definition, termSlug }: DefinitionItemProps) =>
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="text-sm text-text-muted">
           <span>by </span>
-          <Link to="#" className="text-primary hover:underline">
+          <Link to="#" className="text-link hover:underline">
             {definition.author}
           </Link>
           <span> {formatDate(definition.createdAt)}</span>

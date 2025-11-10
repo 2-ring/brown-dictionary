@@ -8,8 +8,8 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-background border-b border-border/50 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center gap-4">
+      <nav className="bg-navbar border-b border-border/50 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center gap-4">
           <Link to="/" className="flex items-center flex-shrink-0">
             <div className="text-2xl font-bold leading-none">
               <span className="text-text">ur</span>

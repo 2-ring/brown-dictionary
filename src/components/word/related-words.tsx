@@ -5,29 +5,35 @@ interface RelatedWordsProps {
 }
 
 export const RelatedWords = ({ text }: RelatedWordsProps) => {
-  // Extract unique words from the definition text (words longer than 2 chars)
-  const extractWords = (text: string) => {
+  // Extract key words as related terms
+  const extractRelatedWords = (text: string) => {
     const words = text.split(/\b/);
-    const uniqueWords = new Set<string>();
+    const keyWords: string[] = [];
 
     words.forEach(word => {
-      if (word.match(/^[a-zA-Z]+$/) && word.length > 2) {
-        uniqueWords.add(word.toLowerCase());
+      // Extract significant words (3+ chars, alphabetic only)
+      if (word.match(/^[a-zA-Z]+$/) && word.length >= 3) {
+        // Skip common words
+        const commonWords = ['the', 'and', 'with', 'for', 'are', 'from', 'that', 'this'];
+        if (!commonWords.includes(word.toLowerCase())) {
+          keyWords.push(word.toLowerCase());
+        }
       }
     });
 
-    return Array.from(uniqueWords).slice(0, 6); // Limit to first 6 words
+    // Return unique words, limit to first 5-6
+    return [...new Set(keyWords)].slice(0, 6);
   };
 
-  const relatedWords = extractWords(text);
+  const relatedWords = extractRelatedWords(text);
 
   return (
-    <div className="text-text-muted text-base mb-4">
+    <div className="text-base mb-4">
       {relatedWords.map((word, index) => (
         <span key={index}>
           <Link
             to={`/word/${word}`}
-            className="text-primary hover:underline"
+            className="text-link hover:underline"
           >
             {word}
           </Link>

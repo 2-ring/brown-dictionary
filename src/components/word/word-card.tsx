@@ -19,7 +19,7 @@ export const WordCard = ({ word, showAllDefinitions = false }: WordCardProps) =>
       <div className="p-8">
         <div className="flex items-start justify-between mb-2">
           <Link to={`/word/${word.slug}`} className="flex-1">
-            <h2 className="text-4xl font-bold text-primary hover:underline">
+            <h2 className="text-4xl font-bold text-link hover:underline">
               {word.term}
             </h2>
           </Link>
@@ -44,7 +44,7 @@ export const WordCard = ({ word, showAllDefinitions = false }: WordCardProps) =>
           <div className="mt-6 pt-6">
             <Link
               to={`/word/${word.slug}`}
-              className="text-primary hover:underline text-sm"
+              className="text-link hover:underline text-sm"
             >
               View {word.definitions.length - 1} more definition{word.definitions.length - 1 !== 1 ? 's' : ''}
             </Link>
