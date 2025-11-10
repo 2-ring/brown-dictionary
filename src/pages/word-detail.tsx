@@ -4,6 +4,7 @@ import type { Word } from '../database/db';
 import { getWordBySlug } from '../database/db';
 import { WordCard } from '../components/word/word-card';
 import { Button } from '../components/common/button';
+import { Spinner } from '../components/common/spinner';
 
 export const WordDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -25,7 +26,7 @@ export const WordDetail = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-text-muted">Loading...</div>
+        <Spinner />
       </div>
     );
   }

@@ -5,6 +5,7 @@ import { getWordsByLetter } from '../database/db';
 import { AlphabetGrid } from '../components/browse/alphabet-grid';
 import { WordList } from '../components/browse/word-list';
 import { Button } from '../components/common/button';
+import { Spinner } from '../components/common/spinner';
 
 export const Browse = () => {
   const { letter } = useParams<{ letter: string }>();
@@ -52,7 +53,7 @@ export const Browse = () => {
 
       {loading ? (
         <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-text-muted">Loading...</div>
+          <Spinner />
         </div>
       ) : words.length > 0 ? (
         <>

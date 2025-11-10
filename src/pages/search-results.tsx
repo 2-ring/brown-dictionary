@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import type { Word } from '../database/db';
 import { searchWords } from '../database/db';
 import { WordFeed } from '../components/feed/word-feed';
+import { Spinner } from '../components/common/spinner';
 
 export const SearchResults = () => {
   const [searchParams] = useSearchParams();
@@ -26,7 +27,7 @@ export const SearchResults = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-text-muted">Searching...</div>
+        <Spinner />
       </div>
     );
   }
