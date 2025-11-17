@@ -31,25 +31,13 @@ export default function Settings() {
       {/* Header */}
       <div className="absolute top-4 sm:top-8 left-1/2 -translate-x-1/2">
         <h1 className="text-white text-xl sm:text-2xl font-bold border-b-2 sm:border-b-4 border-white pb-1">
-          HELLO
+          PROFILE
         </h1>
       </div>
 
       {/* Main Content */}
       <div className="w-full max-w-md bg-white p-6 sm:p-12 mt-12 sm:mt-0">
         <div className="space-y-4">
-          {/* Change handle */}
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              toast.info('Change handle functionality coming soon');
-            }}
-            className="block text-blue-600 hover:underline text-base sm:text-lg"
-          >
-            Click here to change your handle
-          </a>
-
           {/* See definitions */}
           <div className="text-gray-800 text-base sm:text-lg">
             See all of your{' '}
