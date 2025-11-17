@@ -85,10 +85,8 @@ export const getWords = async (): Promise<Word[]> => {
     definitions: docSnapshot.data().definitions.map((def: any) => ({
       ...def,
       createdAt: def.createdAt.toDate(),
-      upvoteUserIds: def.upvoteUserIds || [],
-      downvoteUserIds: def.downvoteUserIds || [],
-      upvotes: def.upvoteUserIds?.length || def.upvotes || 0,
-      downvotes: def.downvoteUserIds?.length || def.downvotes || 0
+      upvotes: def.upvoteUserIds.length,
+      downvotes: def.downvoteUserIds.length
     }))
   }));
 };
@@ -106,10 +104,8 @@ export const getWordBySlug = async (slug: string): Promise<Word | null> => {
     definitions: docSnapshot.data().definitions.map((def: any) => ({
       ...def,
       createdAt: def.createdAt.toDate(),
-      upvoteUserIds: def.upvoteUserIds || [],
-      downvoteUserIds: def.downvoteUserIds || [],
-      upvotes: def.upvoteUserIds?.length || def.upvotes || 0,
-      downvotes: def.downvoteUserIds?.length || def.downvotes || 0
+      upvotes: def.upvoteUserIds.length,
+      downvotes: def.downvoteUserIds.length
     }))
   };
 };
@@ -132,10 +128,8 @@ export const getWordsByLetter = async (letter: string): Promise<Word[]> => {
     definitions: docSnapshot.data().definitions.map((def: any) => ({
       ...def,
       createdAt: def.createdAt.toDate(),
-      upvoteUserIds: def.upvoteUserIds || [],
-      downvoteUserIds: def.downvoteUserIds || [],
-      upvotes: def.upvoteUserIds?.length || def.upvotes || 0,
-      downvotes: def.downvoteUserIds?.length || def.downvotes || 0
+      upvotes: def.upvoteUserIds.length,
+      downvotes: def.downvoteUserIds.length
     }))
   }));
 };
@@ -174,10 +168,8 @@ export const getRandomWords = async (count: number = 5): Promise<Word[]> => {
     definitions: docSnapshot.data().definitions.map((def: any) => ({
       ...def,
       createdAt: def.createdAt.toDate(),
-      upvoteUserIds: def.upvoteUserIds || [],
-      downvoteUserIds: def.downvoteUserIds || [],
-      upvotes: def.upvoteUserIds?.length || def.upvotes || 0,
-      downvotes: def.downvoteUserIds?.length || def.downvotes || 0
+      upvotes: def.upvoteUserIds.length,
+      downvotes: def.downvoteUserIds.length
     }))
   }));
   const shuffled = [...allWords].sort(() => Math.random() - 0.5);
@@ -341,13 +333,10 @@ export const getUserVote = async (
   definitionId: string,
   userId: string
 ): Promise<'up' | 'down' | null> => {
-  console.log('[getUserVote] Called with:', { wordId, definitionId, userId });
-
   const wordRef = doc(db, 'words', wordId);
   const wordDoc = await getDoc(wordRef);
 
   if (!wordDoc.exists()) {
-    console.log('[getUserVote] Word doc does not exist');
     return null;
   }
 
@@ -355,25 +344,16 @@ export const getUserVote = async (
   const definition = word.definitions.find(def => def.id === definitionId);
 
   if (!definition) {
-    console.log('[getUserVote] Definition not found in word');
     return null;
   }
 
-  const upvoteUserIds = definition.upvoteUserIds || [];
-  const downvoteUserIds = definition.downvoteUserIds || [];
-
-  console.log('[getUserVote] Vote arrays:', { upvoteUserIds, downvoteUserIds });
-
-  if (upvoteUserIds.includes(userId)) {
-    console.log('[getUserVote] User has upvoted');
+  if (definition.upvoteUserIds?.includes(userId)) {
     return 'up';
   }
-  if (downvoteUserIds.includes(userId)) {
-    console.log('[getUserVote] User has downvoted');
+  if (definition.downvoteUserIds?.includes(userId)) {
     return 'down';
   }
 
-  console.log('[getUserVote] User has not voted');
   return null;
 };
 
@@ -406,8 +386,8 @@ export const upvoteDefinition = async (
     }
 
     const definition = word.definitions[definitionIndex];
-    const upvoteUserIds = definition.upvoteUserIds || [];
-    const downvoteUserIds = definition.downvoteUserIds || [];
+    const upvoteUserIds = definition.upvoteUserIds;
+    const downvoteUserIds = definition.downvoteUserIds;
 
     // Check if user already upvoted
     if (upvoteUserIds.includes(userId)) {
@@ -463,8 +443,8 @@ export const downvoteDefinition = async (
     }
 
     const definition = word.definitions[definitionIndex];
-    const upvoteUserIds = definition.upvoteUserIds || [];
-    const downvoteUserIds = definition.downvoteUserIds || [];
+    const upvoteUserIds = definition.upvoteUserIds;
+    const downvoteUserIds = definition.downvoteUserIds;
 
     // Check if user already downvoted
     if (downvoteUserIds.includes(userId)) {
@@ -520,8 +500,8 @@ export const removeVote = async (
     }
 
     const definition = word.definitions[definitionIndex];
-    const upvoteUserIds = definition.upvoteUserIds || [];
-    const downvoteUserIds = definition.downvoteUserIds || [];
+    const upvoteUserIds = definition.upvoteUserIds;
+    const downvoteUserIds = definition.downvoteUserIds;
 
     // Update the definition with user removed from both arrays
     const updatedDefinitions = [...word.definitions];

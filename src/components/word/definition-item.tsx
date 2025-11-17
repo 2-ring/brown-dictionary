@@ -11,8 +11,6 @@ interface DefinitionItemProps {
 }
 
 export const DefinitionItem = ({ definition, termSlug, wordId, isFirst = false }: DefinitionItemProps) => {
-  console.log('[DefinitionItem] Rendering with definition:', { id: definition.id, text: definition.text.substring(0, 30) });
-
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
       month: 'long',

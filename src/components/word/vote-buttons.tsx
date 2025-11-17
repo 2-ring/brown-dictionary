@@ -21,17 +21,13 @@ export const VoteButtons = ({ upvotes, downvotes, definitionId, wordId }: VoteBu
   // Load user's existing vote on mount and when props change
   useEffect(() => {
     const loadUserVote = async () => {
-      console.log('[VoteButtons] Loading vote state:', { user: !!user, userId: user?.uid, definitionId, wordId });
-
       if (!user || !definitionId || !wordId) {
-        console.log('[VoteButtons] Missing required data, setting to none');
         setVoteState('none');
         return;
       }
 
       try {
         const existingVote = await getUserVote(wordId, definitionId, user.uid);
-        console.log('[VoteButtons] Loaded vote from DB:', existingVote);
         setVoteState(existingVote || 'none');
       } catch (error) {
         console.error('Error loading user vote:', error);
