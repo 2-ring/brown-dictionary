@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, addDoc, query, where, orderBy, limit, Timestamp } from 'firebase/firestore';
 
 export interface Definition {
   text: string;
@@ -114,4 +114,82 @@ export const getRandomWords = async (count: number = 5): Promise<Word[]> => {
   }));
   const shuffled = [...allWords].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count);
+};
+
+// Helper function to create a URL-friendly slug
+const createSlug = (term: string): string => {
+  return term
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+    .trim();
+};
+
+export interface NewWordData {
+  term: string;
+  definition: string;
+  example: string;
+}
+
+export const addNewWord = async (data: NewWordData): Promise<void> => {
+  const wordsRef = collection(db, 'words');
+  const slug = createSlug(data.term);
+
+  // Check if word already exists
+  const existingQuery = query(wordsRef, where('slug', '==', slug), limit(1));
+  const existingSnapshot = await getDocs(existingQuery);
+
+  if (!existingSnapshot.empty) {
+    // Word exists, add definition to existing word
+    // TODO: Implement adding definition to existing word
+    throw new Error('Word already exists. Adding definitions to existing words is not yet implemented.');
+  }
+
+  // Create new word
+  const newWord = {
+    term: data.term,
+    slug: slug,
+    definitions: [
+      {
+        text: data.definition,
+        example: data.example,
+        author: 'Anonymous', // TODO: Replace with actual user when auth is implemented
+        upvotes: 0,
+        downvotes: 0,
+        createdAt: Timestamp.now()
+      }
+    ],
+    createdAt: Timestamp.now(),
+    viewCount: 0
+  };
+
+  await addDoc(wordsRef, newWord);
+};
+
+export interface Report {
+  definitionId?: string;
+  wordSlug?: string;
+  reason: string;
+  additionalInfo?: string;
+  createdAt: Date;
+  status: 'pending' | 'reviewed' | 'resolved';
+}
+
+export const submitReport = async (
+  wordSlug: string,
+  reason: string,
+  additionalInfo?: string
+): Promise<void> => {
+  const reportsRef = collection(db, 'reports');
+
+  const report = {
+    wordSlug: wordSlug,
+    reason: reason,
+    additionalInfo: additionalInfo || '',
+    createdAt: Timestamp.now(),
+    status: 'pending'
+  };
+
+  await addDoc(reportsRef, report);
 };

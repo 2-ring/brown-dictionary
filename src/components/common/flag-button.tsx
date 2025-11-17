@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { Modal } from './modal';
 import { toast } from 'sonner';
+import { submitReport } from '../../database/db';
 
 interface FlagButtonProps {
-  definitionId?: string;
-  onFlag?: (reason: string) => void;
+  wordSlug?: string;
 }
 
-export const FlagButton = ({ definitionId, onFlag }: FlagButtonProps) => {
+export const FlagButton = ({ wordSlug }: FlagButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedReason, setSelectedReason] = useState<string>('');
   const [additionalInfo, setAdditionalInfo] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const flagReasons = [
     { id: 'spam', label: 'Spam or advertising' },
@@ -20,14 +21,21 @@ export const FlagButton = ({ definitionId, onFlag }: FlagButtonProps) => {
     { id: 'other', label: 'Other' },
   ];
 
-  const handleSubmit = () => {
-    if (selectedReason) {
-      const flagData = `${selectedReason}${additionalInfo ? `: ${additionalInfo}` : ''}`;
-      onFlag?.(flagData);
+  const handleSubmit = async () => {
+    if (!selectedReason || !wordSlug) return;
+
+    setIsSubmitting(true);
+    try {
+      await submitReport(wordSlug, selectedReason, additionalInfo);
+      toast.success('Thank you for reporting.');
       setIsOpen(false);
       setSelectedReason('');
       setAdditionalInfo('');
-      toast.success('Thank you for reporting.');
+    } catch (error) {
+      console.error('Error submitting report:', error);
+      toast.error('Failed to submit report. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -98,19 +106,13 @@ export const FlagButton = ({ definitionId, onFlag }: FlagButtonProps) => {
             </div>
           )}
 
-          <div className="flex gap-3 pt-2">
-            <button
-              onClick={() => setIsOpen(false)}
-              className="flex-1 px-4 py-3 bg-card-secondary hover:bg-background border border-border rounded-lg text-text font-medium transition-colors"
-            >
-              Cancel
-            </button>
+          <div className="pt-2">
             <button
               onClick={handleSubmit}
-              disabled={!selectedReason}
-              className="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600"
+              disabled={!selectedReason || isSubmitting}
+              className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600"
             >
-              Submit Report
+              {isSubmitting ? 'Submitting...' : 'Submit!'}
             </button>
           </div>
         </div>

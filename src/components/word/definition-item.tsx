@@ -44,7 +44,7 @@ export const DefinitionItem = ({ definition, termSlug, isFirst = false }: Defini
 
       <div className="flex items-center justify-between gap-3">
         <VoteButtons upvotes={definition.upvotes} downvotes={definition.downvotes} />
-        <FlagButton />
+        <FlagButton wordSlug={termSlug} />
       </div>
     </div>
   );

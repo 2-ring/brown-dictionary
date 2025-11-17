@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SearchBar } from '../common/search-bar';
 import { DropdownMenu } from './dropdown-menu';
+import { AddDefinitionModal } from '../common/add-definition-modal';
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -24,14 +26,14 @@ export const Navbar = () => {
           <SearchBar />
 
           <div className="flex items-center gap-2">
-            <Link
-              to="/add"
+            <button
+              onClick={() => setIsAddModalOpen(true)}
               className="bg-primary hover:bg-primary-hover text-white p-2 rounded-full transition-colors"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-            </Link>
+            </button>
 
             <button
               onClick={toggleMenu}
@@ -52,6 +54,7 @@ export const Navbar = () => {
       </nav>
 
       <DropdownMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      <AddDefinitionModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} />
     </>
   );
 };
