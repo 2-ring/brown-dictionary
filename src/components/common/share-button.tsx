@@ -45,8 +45,8 @@ export const ShareButton = ({ url, title }: ShareButtonProps) => {
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setIsOpen(false)}>
-          <div className="bg-card rounded-lg p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/50 flex items-end md:items-center justify-center z-50" onClick={() => setIsOpen(false)}>
+          <div className="bg-card rounded-t-3xl md:rounded-lg p-6 max-w-md w-full animate-slide-up" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold text-text">Share this definition</h3>
               <button onClick={() => setIsOpen(false)} className="text-text-muted hover:text-text">
