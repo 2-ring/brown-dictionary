@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import type { Word } from '../database/db';
-import { searchWords } from '../database/db';
+import { searchWords, getRandomWords } from '../database/db';
 import { WordFeed } from '../components/feed/word-feed';
 import { Spinner } from '../components/common/spinner';
 
@@ -10,6 +10,7 @@ export const SearchResults = () => {
   const query = searchParams.get('q') || '';
   const [words, setWords] = useState<Word[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -24,6 +25,15 @@ export const SearchResults = () => {
     }
   }, [query]);
 
+  const handleLoadMore = async () => {
+    setLoadingMore(true);
+    const randomWords = await getRandomWords(10);
+    setLoadingMore(false);
+    if (randomWords.length > 0) {
+      window.location.href = `/word/${randomWords[0].slug}`;
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -33,18 +43,16 @@ export const SearchResults = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-text mb-2">
-          Search results for "{query}"
-        </h1>
-        <p className="text-text-muted">
-          {words.length} {words.length === 1 ? 'result' : 'results'} found
-        </p>
-      </div>
-
+    <div className="px-6 py-8">
       {words.length > 0 ? (
-        <WordFeed words={words} />
+        <WordFeed
+          words={words}
+          onRandomClick={handleLoadMore}
+          isLoadingRandom={loadingMore}
+          title={`Search results for "${query}"`}
+          subtitle={`${words.length} ${words.length === 1 ? 'result' : 'results'} found`}
+          headerStyle="secondary"
+        />
       ) : (
         <div className="text-center py-12">
           <p className="text-text-muted text-lg mb-4">

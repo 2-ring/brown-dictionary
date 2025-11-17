@@ -31,9 +31,10 @@ export const WordCard = ({ word, showAllDefinitions = false }: WordCardProps) =>
         <div>
           {displayDefinitions.map((definition, index) => (
             <DefinitionItem
-              key={index}
+              key={definition.id || index}
               definition={definition}
               termSlug={word.slug}
+              wordId={word.id}
               isFirst={index === 0}
             />
           ))}

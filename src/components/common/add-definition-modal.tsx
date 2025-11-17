@@ -34,6 +34,7 @@ export const AddDefinitionModal = ({ isOpen, onClose }: AddDefinitionModalProps)
         definition: formData.definition,
         example: formData.example,
         author: user.displayName || user.email || 'Anonymous',
+        authorId: user.uid,
       });
 
       toast.success('Word added successfully!');

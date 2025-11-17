@@ -11,6 +11,9 @@ interface WordFeedProps {
   isLoadingRandom?: boolean;
   showTopPadding?: boolean;
   showAllDefinitions?: boolean;
+  title?: string;
+  subtitle?: string;
+  headerStyle?: 'main' | 'secondary';
 }
 
 export const WordFeed = ({
@@ -19,7 +22,10 @@ export const WordFeed = ({
   onRandomClick,
   isLoadingRandom = false,
   showTopPadding = true,
-  showAllDefinitions = false
+  showAllDefinitions = false,
+  title,
+  subtitle,
+  headerStyle = 'main'
 }: WordFeedProps) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -42,9 +48,25 @@ export const WordFeed = ({
     return null;
   }
 
+  const titleClassName = headerStyle === 'secondary'
+    ? "text-2xl font-bold text-text mb-2"
+    : "text-4xl font-bold text-text mb-2 font-serif";
+  const subtitleClassName = "text-text-muted";
+
   return (
     <div>
-      <div className={`space-y-6 ${showTopPadding ? 'pt-12' : ''}`}>
+      {(title || subtitle) && (
+        <div className="max-w-3xl mx-auto pt-12 pb-6">
+          {title && (
+            <h1 className={titleClassName}>{title}</h1>
+          )}
+          {subtitle && (
+            <p className={subtitleClassName}>{subtitle}</p>
+          )}
+        </div>
+      )}
+
+      <div className={`space-y-6 ${showTopPadding && !title && !subtitle ? 'pt-12' : ''}`}>
         {currentWords.map((word) => (
           <WordCard key={word.slug} word={word} showAllDefinitions={showAllDefinitions} />
         ))}
@@ -58,10 +80,12 @@ export const WordFeed = ({
         />
       )}
 
-      <MoreRandomButton
-        onClick={onRandomClick}
-        isLoading={isLoadingRandom}
-      />
+      <div className="max-w-3xl mx-auto mt-8">
+        <MoreRandomButton
+          onClick={onRandomClick}
+          isLoading={isLoadingRandom}
+        />
+      </div>
     </div>
   );
 };

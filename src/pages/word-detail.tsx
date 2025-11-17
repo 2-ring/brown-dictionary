@@ -11,16 +11,20 @@ export const WordDetail = () => {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
 
+  const fetchWord = async () => {
+    if (slug) {
+      const data = await getWordBySlug(slug);
+      setWord(data);
+    }
+  };
+
   useEffect(() => {
-    const fetchWord = async () => {
-      if (slug) {
-        const data = await getWordBySlug(slug);
-        setWord(data);
-        setLoading(false);
-      }
+    const loadWord = async () => {
+      await fetchWord();
+      setLoading(false);
     };
 
-    fetchWord();
+    loadWord();
   }, [slug]);
 
   const handleLoadMore = async () => {

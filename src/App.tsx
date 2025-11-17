@@ -8,6 +8,7 @@ import { SearchResults } from './pages/search-results';
 import Auth from './pages/auth';
 import Settings from './pages/settings';
 import Profile from './pages/profile';
+import Migrate from './pages/migrate';
 import { AuthProvider, useAuth } from './contexts/auth-context';
 import ProtectedRoute from './components/auth/protected-route';
 import { Toaster } from 'sonner';
@@ -17,10 +18,11 @@ function AuthenticatedApp() {
   const location = useLocation();
   const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
   const isSettingsPage = location.pathname === '/settings';
+  const isMigratePage = location.pathname === '/migrate';
 
   return (
     <div className="min-h-screen flex flex-col">
-      {!isAuthPage && !isSettingsPage && <Navbar />}
+      {!isAuthPage && !isSettingsPage && !isMigratePage && <Navbar />}
       <main className="flex-1">
         <Routes>
           <Route path="/login" element={<AuthRedirect />} />
@@ -32,9 +34,10 @@ function AuthenticatedApp() {
           <Route path="/search" element={<ProtectedRoute><SearchResults /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
           <Route path="/profile/:username" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/migrate" element={<ProtectedRoute><Migrate /></ProtectedRoute>} />
         </Routes>
       </main>
-      {!isAuthPage && !isSettingsPage && <Footer />}
+      {!isAuthPage && !isSettingsPage && !isMigratePage && <Footer />}
     </div>
   );
 }

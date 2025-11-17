@@ -6,10 +6,13 @@ import { FlagButton } from '../common/flag-button';
 interface DefinitionItemProps {
   definition: Definition;
   termSlug?: string;
+  wordId?: string;
   isFirst?: boolean;
 }
 
-export const DefinitionItem = ({ definition, termSlug, isFirst = false }: DefinitionItemProps) => {
+export const DefinitionItem = ({ definition, termSlug, wordId, isFirst = false }: DefinitionItemProps) => {
+  console.log('[DefinitionItem] Rendering with definition:', { id: definition.id, text: definition.text.substring(0, 30) });
+
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
       month: 'long',
@@ -43,7 +46,12 @@ export const DefinitionItem = ({ definition, termSlug, isFirst = false }: Defini
       </div>
 
       <div className="flex items-center justify-between gap-3">
-        <VoteButtons upvotes={definition.upvotes} downvotes={definition.downvotes} />
+        <VoteButtons
+          upvotes={definition.upvotes}
+          downvotes={definition.downvotes}
+          definitionId={definition.id}
+          wordId={wordId || ''}
+        />
         <FlagButton wordSlug={termSlug} />
       </div>
     </div>

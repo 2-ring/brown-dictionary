@@ -1,5 +1,18 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, addDoc, query, where, orderBy, limit, Timestamp } from 'firebase/firestore';
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  query,
+  where,
+  orderBy,
+  limit,
+  Timestamp,
+  doc,
+  getDoc,
+  runTransaction
+} from 'firebase/firestore';
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -10,12 +23,15 @@ import {
 } from 'firebase/auth';
 
 export interface Definition {
+  id: string; // Unique identifier for the definition
   text: string;
   example: string;
   author: string;
   authorId?: string;
-  upvotes: number;
-  downvotes: number;
+  upvotes: number; // Computed from upvoteUserIds.length
+  downvotes: number; // Computed from downvoteUserIds.length
+  upvoteUserIds: string[]; // Array of user IDs who upvoted
+  downvoteUserIds: string[]; // Array of user IDs who downvoted
   createdAt: Date;
 }
 
@@ -39,7 +55,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+export const db = getFirestore(app);
 export const auth = getAuth(app);
 
 // ===== AUTHENTICATION FUNCTIONS =====
@@ -62,13 +78,17 @@ export const getWords = async (): Promise<Word[]> => {
   const wordsRef = collection(db, 'words');
   const q = query(wordsRef, orderBy('createdAt', 'desc'));
   const snapshot = await getDocs(q);
-  return snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data() as Word,
-    createdAt: doc.data().createdAt.toDate(),
-    definitions: doc.data().definitions.map((def: any) => ({
+  return snapshot.docs.map(docSnapshot => ({
+    id: docSnapshot.id,
+    ...docSnapshot.data() as Word,
+    createdAt: docSnapshot.data().createdAt.toDate(),
+    definitions: docSnapshot.data().definitions.map((def: any) => ({
       ...def,
-      createdAt: def.createdAt.toDate()
+      createdAt: def.createdAt.toDate(),
+      upvoteUserIds: def.upvoteUserIds || [],
+      downvoteUserIds: def.downvoteUserIds || [],
+      upvotes: def.upvoteUserIds?.length || def.upvotes || 0,
+      downvotes: def.downvoteUserIds?.length || def.downvotes || 0
     }))
   }));
 };
@@ -78,13 +98,18 @@ export const getWordBySlug = async (slug: string): Promise<Word | null> => {
   const q = query(wordsRef, where('slug', '==', slug), limit(1));
   const snapshot = await getDocs(q);
   if (snapshot.empty) return null;
-  const doc = snapshot.docs[0];
+  const docSnapshot = snapshot.docs[0];
   return {
-    ...doc.data() as Word,
-    createdAt: doc.data().createdAt.toDate(),
-    definitions: doc.data().definitions.map((def: any) => ({
+    id: docSnapshot.id,
+    ...docSnapshot.data() as Word,
+    createdAt: docSnapshot.data().createdAt.toDate(),
+    definitions: docSnapshot.data().definitions.map((def: any) => ({
       ...def,
-      createdAt: def.createdAt.toDate()
+      createdAt: def.createdAt.toDate(),
+      upvoteUserIds: def.upvoteUserIds || [],
+      downvoteUserIds: def.downvoteUserIds || [],
+      upvotes: def.upvoteUserIds?.length || def.upvotes || 0,
+      downvotes: def.downvoteUserIds?.length || def.downvotes || 0
     }))
   };
 };
@@ -100,12 +125,17 @@ export const getWordsByLetter = async (letter: string): Promise<Word[]> => {
     orderBy('term', 'asc')
   );
   const snapshot = await getDocs(q);
-  return snapshot.docs.map(doc => ({
-    ...doc.data() as Word,
-    createdAt: doc.data().createdAt.toDate(),
-    definitions: doc.data().definitions.map((def: any) => ({
+  return snapshot.docs.map(docSnapshot => ({
+    id: docSnapshot.id,
+    ...docSnapshot.data() as Word,
+    createdAt: docSnapshot.data().createdAt.toDate(),
+    definitions: docSnapshot.data().definitions.map((def: any) => ({
       ...def,
-      createdAt: def.createdAt.toDate()
+      createdAt: def.createdAt.toDate(),
+      upvoteUserIds: def.upvoteUserIds || [],
+      downvoteUserIds: def.downvoteUserIds || [],
+      upvotes: def.upvoteUserIds?.length || def.upvotes || 0,
+      downvotes: def.downvoteUserIds?.length || def.downvotes || 0
     }))
   }));
 };
@@ -115,12 +145,17 @@ export const searchWords = async (searchTerm: string): Promise<Word[]> => {
   const q = query(wordsRef);
   const snapshot = await getDocs(q);
   const results = snapshot.docs
-    .map(doc => ({
-      ...doc.data() as Word,
-      createdAt: doc.data().createdAt.toDate(),
-      definitions: doc.data().definitions.map((def: any) => ({
+    .map(docSnapshot => ({
+      id: docSnapshot.id,
+      ...docSnapshot.data() as Word,
+      createdAt: docSnapshot.data().createdAt.toDate(),
+      definitions: docSnapshot.data().definitions.map((def: any) => ({
         ...def,
-        createdAt: def.createdAt.toDate()
+        createdAt: def.createdAt.toDate(),
+        upvoteUserIds: def.upvoteUserIds || [],
+        downvoteUserIds: def.downvoteUserIds || [],
+        upvotes: def.upvoteUserIds?.length || def.upvotes || 0,
+        downvotes: def.downvoteUserIds?.length || def.downvotes || 0
       }))
     }))
     .filter(word =>
@@ -132,12 +167,17 @@ export const searchWords = async (searchTerm: string): Promise<Word[]> => {
 export const getRandomWords = async (count: number = 5): Promise<Word[]> => {
   const wordsRef = collection(db, 'words');
   const snapshot = await getDocs(wordsRef);
-  const allWords = snapshot.docs.map(doc => ({
-    ...doc.data() as Word,
-    createdAt: doc.data().createdAt.toDate(),
-    definitions: doc.data().definitions.map((def: any) => ({
+  const allWords = snapshot.docs.map(docSnapshot => ({
+    id: docSnapshot.id,
+    ...docSnapshot.data() as Word,
+    createdAt: docSnapshot.data().createdAt.toDate(),
+    definitions: docSnapshot.data().definitions.map((def: any) => ({
       ...def,
-      createdAt: def.createdAt.toDate()
+      createdAt: def.createdAt.toDate(),
+      upvoteUserIds: def.upvoteUserIds || [],
+      downvoteUserIds: def.downvoteUserIds || [],
+      upvotes: def.upvoteUserIds?.length || def.upvotes || 0,
+      downvotes: def.downvoteUserIds?.length || def.downvotes || 0
     }))
   }));
   const shuffled = [...allWords].sort(() => Math.random() - 0.5);
@@ -159,6 +199,7 @@ export interface NewWordData {
   definition: string;
   example: string;
   author: string;
+  authorId?: string;
 }
 
 export const addNewWord = async (data: NewWordData): Promise<void> => {
@@ -181,11 +222,15 @@ export const addNewWord = async (data: NewWordData): Promise<void> => {
     slug: slug,
     definitions: [
       {
+        id: generateDefinitionId(),
         text: data.definition,
         example: data.example,
         author: data.author,
+        authorId: data.authorId,
         upvotes: 0,
         downvotes: 0,
+        upvoteUserIds: [],
+        downvoteUserIds: [],
         createdAt: Timestamp.now()
       }
     ],
@@ -229,17 +274,21 @@ export const getUserDefinitions = async (userId: string): Promise<Word[]> => {
 
   // Filter words that have at least one definition by this user
   const userWords = snapshot.docs
-    .map(doc => ({
-      id: doc.id,
-      ...doc.data() as Word,
-      createdAt: doc.data().createdAt.toDate(),
-      definitions: doc.data().definitions.map((def: any) => ({
+    .map(docSnapshot => ({
+      id: docSnapshot.id,
+      ...docSnapshot.data() as Word,
+      createdAt: docSnapshot.data().createdAt.toDate(),
+      definitions: docSnapshot.data().definitions.map((def: any) => ({
         ...def,
-        createdAt: def.createdAt.toDate()
+        createdAt: def.createdAt.toDate(),
+        upvoteUserIds: def.upvoteUserIds || [],
+        downvoteUserIds: def.downvoteUserIds || [],
+        upvotes: def.upvoteUserIds?.length || def.upvotes || 0,
+        downvotes: def.downvoteUserIds?.length || def.downvotes || 0
       }))
     }))
     .filter(word =>
-      word.definitions.some(def => def.authorId === userId)
+      word.definitions.some((def: Definition) => def.authorId === userId)
     );
 
   return userWords;
@@ -251,18 +300,246 @@ export const getUserDefinitionsByUsername = async (username: string): Promise<Wo
 
   // Filter words that have at least one definition by this username
   const userWords = snapshot.docs
-    .map(doc => ({
-      id: doc.id,
-      ...doc.data() as Word,
-      createdAt: doc.data().createdAt.toDate(),
-      definitions: doc.data().definitions.map((def: any) => ({
+    .map(docSnapshot => ({
+      id: docSnapshot.id,
+      ...docSnapshot.data() as Word,
+      createdAt: docSnapshot.data().createdAt.toDate(),
+      definitions: docSnapshot.data().definitions.map((def: any) => ({
         ...def,
-        createdAt: def.createdAt.toDate()
+        createdAt: def.createdAt.toDate(),
+        upvoteUserIds: def.upvoteUserIds || [],
+        downvoteUserIds: def.downvoteUserIds || [],
+        upvotes: def.upvoteUserIds?.length || def.upvotes || 0,
+        downvotes: def.downvoteUserIds?.length || def.downvotes || 0
       }))
     }))
     .filter(word =>
-      word.definitions.some(def => def.author.toLowerCase() === username.toLowerCase())
+      word.definitions.some((def: Definition) => def.author.toLowerCase() === username.toLowerCase())
     );
 
   return userWords;
 };
+
+// ===== VOTE MANAGEMENT FUNCTIONS =====
+
+/**
+ * Generates a unique ID for a definition using timestamp and random string
+ */
+const generateDefinitionId = (): string => {
+  return `def_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+};
+
+/**
+ * Gets the current vote state for a user on a specific definition
+ * @param wordId - The ID of the word document
+ * @param definitionId - The unique ID of the definition
+ * @param userId - The ID of the user
+ * @returns 'up' if upvoted, 'down' if downvoted, null if no vote
+ */
+export const getUserVote = async (
+  wordId: string,
+  definitionId: string,
+  userId: string
+): Promise<'up' | 'down' | null> => {
+  console.log('[getUserVote] Called with:', { wordId, definitionId, userId });
+
+  const wordRef = doc(db, 'words', wordId);
+  const wordDoc = await getDoc(wordRef);
+
+  if (!wordDoc.exists()) {
+    console.log('[getUserVote] Word doc does not exist');
+    return null;
+  }
+
+  const word = wordDoc.data() as Word;
+  const definition = word.definitions.find(def => def.id === definitionId);
+
+  if (!definition) {
+    console.log('[getUserVote] Definition not found in word');
+    return null;
+  }
+
+  const upvoteUserIds = definition.upvoteUserIds || [];
+  const downvoteUserIds = definition.downvoteUserIds || [];
+
+  console.log('[getUserVote] Vote arrays:', { upvoteUserIds, downvoteUserIds });
+
+  if (upvoteUserIds.includes(userId)) {
+    console.log('[getUserVote] User has upvoted');
+    return 'up';
+  }
+  if (downvoteUserIds.includes(userId)) {
+    console.log('[getUserVote] User has downvoted');
+    return 'down';
+  }
+
+  console.log('[getUserVote] User has not voted');
+  return null;
+};
+
+/**
+ * Upvotes a definition, removing any existing downvote from the same user
+ * Uses transactions to prevent race conditions
+ * @param wordId - The ID of the word document
+ * @param definitionId - The unique ID of the definition
+ * @param userId - The ID of the user voting
+ */
+export const upvoteDefinition = async (
+  wordId: string,
+  definitionId: string,
+  userId: string
+): Promise<void> => {
+  const wordRef = doc(db, 'words', wordId);
+
+  await runTransaction(db, async (transaction) => {
+    const wordDoc = await transaction.get(wordRef);
+
+    if (!wordDoc.exists()) {
+      throw new Error('Word not found');
+    }
+
+    const word = wordDoc.data() as Word;
+    const definitionIndex = word.definitions.findIndex(def => def.id === definitionId);
+
+    if (definitionIndex === -1) {
+      throw new Error('Definition not found');
+    }
+
+    const definition = word.definitions[definitionIndex];
+    const upvoteUserIds = definition.upvoteUserIds || [];
+    const downvoteUserIds = definition.downvoteUserIds || [];
+
+    // Check if user already upvoted
+    if (upvoteUserIds.includes(userId)) {
+      // Already upvoted, no action needed
+      return;
+    }
+
+    // Update the definition with new vote arrays
+    const updatedDefinitions = [...word.definitions];
+    const newUpvoteUserIds = [...upvoteUserIds, userId];
+    const newDownvoteUserIds = downvoteUserIds.filter(id => id !== userId);
+
+    updatedDefinitions[definitionIndex] = {
+      ...definition,
+      upvoteUserIds: newUpvoteUserIds,
+      downvoteUserIds: newDownvoteUserIds,
+      upvotes: newUpvoteUserIds.length,
+      downvotes: newDownvoteUserIds.length
+    };
+
+    transaction.update(wordRef, {
+      definitions: updatedDefinitions
+    });
+  });
+};
+
+/**
+ * Downvotes a definition, removing any existing upvote from the same user
+ * Uses transactions to prevent race conditions
+ * @param wordId - The ID of the word document
+ * @param definitionId - The unique ID of the definition
+ * @param userId - The ID of the user voting
+ */
+export const downvoteDefinition = async (
+  wordId: string,
+  definitionId: string,
+  userId: string
+): Promise<void> => {
+  const wordRef = doc(db, 'words', wordId);
+
+  await runTransaction(db, async (transaction) => {
+    const wordDoc = await transaction.get(wordRef);
+
+    if (!wordDoc.exists()) {
+      throw new Error('Word not found');
+    }
+
+    const word = wordDoc.data() as Word;
+    const definitionIndex = word.definitions.findIndex(def => def.id === definitionId);
+
+    if (definitionIndex === -1) {
+      throw new Error('Definition not found');
+    }
+
+    const definition = word.definitions[definitionIndex];
+    const upvoteUserIds = definition.upvoteUserIds || [];
+    const downvoteUserIds = definition.downvoteUserIds || [];
+
+    // Check if user already downvoted
+    if (downvoteUserIds.includes(userId)) {
+      // Already downvoted, no action needed
+      return;
+    }
+
+    // Update the definition with new vote arrays
+    const updatedDefinitions = [...word.definitions];
+    const newUpvoteUserIds = upvoteUserIds.filter(id => id !== userId);
+    const newDownvoteUserIds = [...downvoteUserIds, userId];
+
+    updatedDefinitions[definitionIndex] = {
+      ...definition,
+      upvoteUserIds: newUpvoteUserIds,
+      downvoteUserIds: newDownvoteUserIds,
+      upvotes: newUpvoteUserIds.length,
+      downvotes: newDownvoteUserIds.length
+    };
+
+    transaction.update(wordRef, {
+      definitions: updatedDefinitions
+    });
+  });
+};
+
+/**
+ * Removes a user's vote (upvote or downvote) from a definition
+ * Uses transactions to prevent race conditions
+ * @param wordId - The ID of the word document
+ * @param definitionId - The unique ID of the definition
+ * @param userId - The ID of the user removing their vote
+ */
+export const removeVote = async (
+  wordId: string,
+  definitionId: string,
+  userId: string
+): Promise<void> => {
+  const wordRef = doc(db, 'words', wordId);
+
+  await runTransaction(db, async (transaction) => {
+    const wordDoc = await transaction.get(wordRef);
+
+    if (!wordDoc.exists()) {
+      throw new Error('Word not found');
+    }
+
+    const word = wordDoc.data() as Word;
+    const definitionIndex = word.definitions.findIndex(def => def.id === definitionId);
+
+    if (definitionIndex === -1) {
+      throw new Error('Definition not found');
+    }
+
+    const definition = word.definitions[definitionIndex];
+    const upvoteUserIds = definition.upvoteUserIds || [];
+    const downvoteUserIds = definition.downvoteUserIds || [];
+
+    // Update the definition with user removed from both arrays
+    const updatedDefinitions = [...word.definitions];
+    const newUpvoteUserIds = upvoteUserIds.filter(id => id !== userId);
+    const newDownvoteUserIds = downvoteUserIds.filter(id => id !== userId);
+
+    updatedDefinitions[definitionIndex] = {
+      ...definition,
+      upvoteUserIds: newUpvoteUserIds,
+      downvoteUserIds: newDownvoteUserIds,
+      upvotes: newUpvoteUserIds.length,
+      downvotes: newDownvoteUserIds.length
+    };
+
+    transaction.update(wordRef, {
+      definitions: updatedDefinitions
+    });
+  });
+};
+
+export { generateDefinitionId };

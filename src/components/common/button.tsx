@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface ButtonProps {
   children: ReactNode;
@@ -6,6 +6,7 @@ interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'outline';
   className?: string;
   type?: 'button' | 'submit';
+  disabled?: boolean;
 }
 
 export const Button = ({
@@ -13,7 +14,8 @@ export const Button = ({
   onClick,
   variant = 'primary',
   className = '',
-  type = 'button'
+  type = 'button',
+  disabled = false
 }: ButtonProps) => {
   const baseStyles = 'px-6 py-2.5 rounded-full font-medium transition-colors';
 
@@ -27,7 +29,8 @@ export const Button = ({
     <button
       type={type}
       onClick={onClick}
-      className={`${baseStyles} ${variants[variant]} ${className}`}
+      disabled={disabled}
+      className={`${baseStyles} ${variants[variant]} ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
     >
       {children}
     </button>
