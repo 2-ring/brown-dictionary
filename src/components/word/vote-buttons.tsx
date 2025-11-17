@@ -51,7 +51,7 @@ export const VoteButtons = ({ upvotes, downvotes, definitionId }: VoteButtonsPro
     <div className="flex items-center gap-0 border-2 border-white rounded-full overflow-hidden w-fit">
       <button
         onClick={handleUpvote}
-        className={`px-6 py-2.5 hover:bg-highlight transition-colors flex items-center gap-2 ${
+        className={`px-6 py-2.5 hover:bg-highlight transition-colors flex items-center gap-2 border-r border-white ${
           voteState === 'up' ? 'bg-highlight' : ''
         }`}
       >
@@ -61,8 +61,6 @@ export const VoteButtons = ({ upvotes, downvotes, definitionId }: VoteButtonsPro
         </svg>
         <span className="text-xs font-medium text-white">{currentUpvotes}</span>
       </button>
-
-      <div className="h-8 w-px bg-white mx-1" />
 
       <button
         onClick={handleDownvote}

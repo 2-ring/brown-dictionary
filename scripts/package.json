@@ -1,0 +1,12 @@
+{
+  "name": "brown-dictionary-scripts",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "import": "tsx import-definitions.ts"
+  },
+  "dependencies": {
+    "firebase": "^11.2.0",
+    "tsx": "^4.19.2"
+  }
+}
