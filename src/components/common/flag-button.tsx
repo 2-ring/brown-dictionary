@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Modal } from './modal';
-import { useToast } from '../../contexts/toast-context';
+import { toast } from 'sonner';
 
 interface FlagButtonProps {
   definitionId?: string;
@@ -11,7 +11,6 @@ export const FlagButton = ({ definitionId, onFlag }: FlagButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedReason, setSelectedReason] = useState<string>('');
   const [additionalInfo, setAdditionalInfo] = useState('');
-  const { showToast } = useToast();
 
   const flagReasons = [
     { id: 'spam', label: 'Spam or advertising' },
@@ -28,7 +27,7 @@ export const FlagButton = ({ definitionId, onFlag }: FlagButtonProps) => {
       setIsOpen(false);
       setSelectedReason('');
       setAdditionalInfo('');
-      showToast('Thank you for reporting. We will review this definition.', 'success');
+      toast.success('Thank you for reporting.');
     }
   };
 

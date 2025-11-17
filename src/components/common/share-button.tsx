@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Modal } from './modal';
-import { useToast } from '../../contexts/toast-context';
+import { toast } from 'sonner';
 
 interface ShareButtonProps {
   url?: string;
@@ -9,17 +9,16 @@ interface ShareButtonProps {
 
 export const ShareButton = ({ url, title }: ShareButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { showToast } = useToast();
   const shareUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
   const shareTitle = title || 'Check out this definition';
 
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
-      showToast('Link copied to clipboard!', 'success');
+      toast.success('Link copied!');
       setIsOpen(false);
     } catch (error) {
-      showToast('Failed to copy link', 'error');
+      toast.error('Failed to copy link');
     }
   };
 
@@ -129,7 +128,6 @@ export const ShareButton = ({ url, title }: ShareButtonProps) => {
                   Email
                 </button>
               </div>
-            </div>
         </div>
       </Modal>
     </>

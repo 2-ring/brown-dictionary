@@ -51,14 +51,13 @@ export const Modal = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 flex justify-center z-50"
+      className={`fixed inset-0 bg-black/50 flex justify-center z-50 ${containerClasses}`}
       onClick={onClose}
     >
-      <div className={`${containerClasses} flex w-full`}>
-        <div
-          className={`bg-card ${contentClasses} ${sizeClasses[size]} w-full animate-slide-up flex flex-col max-h-[90vh] md:max-h-[85vh]`}
-          onClick={(e) => e.stopPropagation()}
-        >
+      <div
+        className={`bg-card ${contentClasses} ${sizeClasses[size]} w-full animate-slide-up flex flex-col max-h-[90vh] md:max-h-[85vh]`}
+        onClick={(e) => e.stopPropagation()}
+      >
           {(title || showCloseButton) && (
             <div className="flex items-center justify-between p-6 pb-4 flex-shrink-0">
               {title && <h3 className="text-xl font-bold text-text">{title}</h3>}
@@ -86,9 +85,8 @@ export const Modal = ({
             </div>
           )}
 
-          <div className="overflow-y-auto px-6 pb-6 flex-1">
-            {children}
-          </div>
+        <div className="overflow-y-auto px-6 pb-6 flex-1">
+          {children}
         </div>
       </div>
     </div>

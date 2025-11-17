@@ -34,46 +34,37 @@ export const AddDefinition = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="term" className="block text-text font-medium mb-2">
-              Word
-            </label>
             <input
               type="text"
               id="term"
               value={formData.term}
               onChange={(e) => setFormData({ ...formData, term: e.target.value })}
-              className="w-full bg-card-secondary text-text px-4 py-3 rounded border border-border focus:outline-none focus:border-primary"
-              placeholder="Enter the word or phrase"
+              className="w-full bg-card-secondary text-highlight px-4 py-3 rounded border border-border focus:outline-none focus:border-primary text-4xl font-bold font-serif"
+              placeholder="Word"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="definition" className="block text-text font-medium mb-2">
-              Definition
-            </label>
             <textarea
               id="definition"
               value={formData.definition}
               onChange={(e) => setFormData({ ...formData, definition: e.target.value })}
               rows={6}
               className="w-full bg-card-secondary text-text px-4 py-3 rounded border border-border focus:outline-none focus:border-primary resize-none"
-              placeholder="Write the definition"
+              placeholder="Type your definition here..."
               required
             />
           </div>
 
           <div>
-            <label htmlFor="example" className="block text-text font-medium mb-2">
-              Example
-            </label>
             <textarea
               id="example"
               value={formData.example}
               onChange={(e) => setFormData({ ...formData, example: e.target.value })}
               rows={6}
               className="w-full bg-card-secondary text-text px-4 py-3 rounded border border-border focus:outline-none focus:border-primary resize-none"
-              placeholder="Use the word in a sentence or provide context"
+              placeholder="Type an example of how it's used in a sentence..."
               required
             />
           </div>
