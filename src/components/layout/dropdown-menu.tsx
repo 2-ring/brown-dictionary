@@ -5,9 +5,10 @@ import { AlphabetGrid } from '../browse/alphabet-grid';
 interface DropdownMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  onAddDefinition?: () => void;
 }
 
-export const DropdownMenu = ({ isOpen, onClose }: DropdownMenuProps) => {
+export const DropdownMenu = ({ isOpen, onClose, onAddDefinition }: DropdownMenuProps) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -37,22 +38,25 @@ export const DropdownMenu = ({ isOpen, onClose }: DropdownMenuProps) => {
                 Home
               </Link>
 
-              <Link
-                to="/add"
-                onClick={onClose}
-                className="block px-4 py-3 text-text hover:text-highlight hover:translate-x-1 transition-all text-lg font-bold"
+              <button
+                onClick={() => {
+                  onClose();
+                  onAddDefinition?.();
+                }}
+                className="block w-full text-left px-4 py-3 text-text hover:text-highlight hover:translate-x-1 transition-all text-lg font-bold"
               >
                 Add a Definition
-              </Link>
+              </button>
 
               <div className="border-t border-border my-4" />
 
-              <a
-                href="#"
+              <Link
+                to="/settings"
+                onClick={onClose}
                 className="block px-4 py-3 text-text hover:text-highlight hover:translate-x-1 transition-all text-lg font-bold"
               >
                 User Settings
-              </a>
+              </Link>
             </nav>
 
             {/* Alphabet grid */}

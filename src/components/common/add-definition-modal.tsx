@@ -60,6 +60,9 @@ export const AddDefinitionModal = ({ isOpen, onClose }: AddDefinitionModalProps)
     >
       <form onSubmit={handleSubmit} className="space-y-6 py-2">
         <div>
+          <label htmlFor="term" className="block text-sm text-text mb-2">
+            Word:
+          </label>
           <input
             type="text"
             id="term"
@@ -72,6 +75,9 @@ export const AddDefinitionModal = ({ isOpen, onClose }: AddDefinitionModalProps)
         </div>
 
         <div>
+          <label htmlFor="definition" className="block text-sm text-text mb-2">
+            Definition:
+          </label>
           <textarea
             id="definition"
             value={formData.definition}
@@ -84,6 +90,9 @@ export const AddDefinitionModal = ({ isOpen, onClose }: AddDefinitionModalProps)
         </div>
 
         <div>
+          <label htmlFor="example" className="block text-sm text-text mb-2">
+            Example:
+          </label>
           <textarea
             id="example"
             value={formData.example}

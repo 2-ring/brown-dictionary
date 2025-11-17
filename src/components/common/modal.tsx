@@ -85,7 +85,7 @@ export const Modal = ({
             </div>
           )}
 
-        <div className="overflow-y-auto px-6 pb-6 flex-1">
+        <div className="overflow-y-auto px-6 pb-6 flex-1 scrollbar-hide">
           {children}
         </div>
       </div>

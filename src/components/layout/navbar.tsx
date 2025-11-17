@@ -3,25 +3,13 @@ import { Link } from 'react-router-dom';
 import { SearchBar } from '../common/search-bar';
 import { DropdownMenu } from './dropdown-menu';
 import { AddDefinitionModal } from '../common/add-definition-modal';
-import { useAuth } from '../../contexts/auth-context';
-import { toast } from 'sonner';
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const { user, signOut } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      toast.success('Signed out successfully');
-    } catch (error) {
-      toast.error('Failed to sign out');
-    }
   };
 
   return (
@@ -38,14 +26,6 @@ export const Navbar = () => {
           <SearchBar />
 
           <div className="flex items-center gap-2">
-            {user && (
-              <div className="hidden sm:flex items-center gap-2 mr-2">
-                <span className="text-sm text-gray-600">
-                  {user.displayName || user.email}
-                </span>
-              </div>
-            )}
-
             <button
               onClick={() => setIsAddModalOpen(true)}
               className="bg-primary hover:bg-primary-hover text-white p-2 rounded-full transition-colors"
@@ -54,16 +34,6 @@ export const Navbar = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
             </button>
-
-            {user && (
-              <button
-                onClick={handleSignOut}
-                className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded-full text-sm font-medium transition-colors"
-                title="Sign out"
-              >
-                Sign Out
-              </button>
-            )}
 
             <button
               onClick={toggleMenu}
@@ -83,7 +53,11 @@ export const Navbar = () => {
         </div>
       </nav>
 
-      <DropdownMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      <DropdownMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        onAddDefinition={() => setIsAddModalOpen(true)}
+      />
       <AddDefinitionModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} />
     </>
   );

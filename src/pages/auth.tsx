@@ -21,10 +21,8 @@ export default function Auth() {
     try {
       if (isSignup) {
         await signUp(emailOrUsername, password, displayName);
-        toast.success('Account created successfully!');
       } else {
         await signIn(emailOrUsername, password);
-        toast.success('Signed in successfully!');
       }
       navigate('/');
     } catch (error: any) {
@@ -69,7 +67,7 @@ export default function Auth() {
                 type="text"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-blue-600 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-blue-400 text-center font-serif text-sm sm:text-base shadow-[0_4px_0_0_rgba(0,0,0,0.25)]"
+                className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-gray-500 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-gray-400 text-center font-serif text-sm sm:text-base shadow-[0_4px_0_0_rgba(0,0,0,0.25)]"
                 required
                 placeholder="Display Name"
               />
@@ -83,7 +81,7 @@ export default function Auth() {
               type="text"
               value={emailOrUsername}
               onChange={(e) => setEmailOrUsername(e.target.value)}
-              className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-blue-600 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-blue-400 text-center font-serif text-sm sm:text-base shadow-[0_4px_0_0_rgba(0,0,0,0.25)]"
+              className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-gray-500 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-gray-400 text-center font-serif text-sm sm:text-base shadow-[0_4px_0_0_rgba(0,0,0,0.25)]"
               required
               placeholder={isSignup ? 'Email' : 'Email or Username'}
             />
@@ -96,7 +94,7 @@ export default function Auth() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-blue-600 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-blue-400 text-center font-serif text-sm sm:text-base shadow-[0_4px_0_0_rgba(0,0,0,0.25)]"
+              className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-gray-500 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-gray-400 text-center font-serif text-sm sm:text-base shadow-[0_4px_0_0_rgba(0,0,0,0.25)]"
               required
               placeholder="Password"
               minLength={6}
@@ -107,7 +105,7 @@ export default function Auth() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-green-500 hover:bg-green-600 text-white font-serif transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base shadow-[0_4px_0_0_rgba(0,0,0,0.25)]"
+            className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white font-serif transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base shadow-[0_4px_0_0_rgba(0,0,0,0.25)]"
           >
             {loading
               ? (isSignup ? 'Creating account...' : 'Signing in...')
