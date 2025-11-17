@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Modal } from './modal';
+import { useToast } from '../../contexts/toast-context';
 
 interface ShareButtonProps {
   url?: string;
@@ -7,12 +9,18 @@ interface ShareButtonProps {
 
 export const ShareButton = ({ url, title }: ShareButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { showToast } = useToast();
   const shareUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
   const shareTitle = title || 'Check out this definition';
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(shareUrl);
-    setIsOpen(false);
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      showToast('Link copied to clipboard!', 'success');
+      setIsOpen(false);
+    } catch (error) {
+      showToast('Failed to copy link', 'error');
+    }
   };
 
   const handleShare = (platform: string) => {
@@ -44,19 +52,12 @@ export const ShareButton = ({ url, title }: ShareButtonProps) => {
         </svg>
       </button>
 
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-end md:items-center justify-center z-50" onClick={() => setIsOpen(false)}>
-          <div className="bg-card rounded-t-3xl md:rounded-lg p-6 max-w-md w-full animate-slide-up" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-text">Share this definition</h3>
-              <button onClick={() => setIsOpen(false)} className="text-text-muted hover:text-text">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="space-y-3">
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Share this definition"
+      >
+        <div className="space-y-3">
               <button
                 onClick={handleCopyLink}
                 className="w-full bg-card-secondary hover:bg-background border border-border rounded-lg px-4 py-3 text-text flex items-center justify-center gap-2 transition-colors"
@@ -129,9 +130,8 @@ export const ShareButton = ({ url, title }: ShareButtonProps) => {
                 </button>
               </div>
             </div>
-          </div>
         </div>
-      )}
+      </Modal>
     </>
   );
 };

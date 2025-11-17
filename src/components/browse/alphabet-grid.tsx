@@ -1,15 +1,20 @@
 import { Link } from 'react-router-dom';
 
-export const AlphabetGrid = () => {
+interface AlphabetGridProps {
+  onLetterClick?: () => void;
+}
+
+export const AlphabetGrid = ({ onLetterClick }: AlphabetGridProps = {}) => {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#'.split('');
 
   return (
-    <div className="grid grid-cols-7 gap-2">
+    <div className="grid grid-cols-9 md:grid-cols-9 gap-1">
       {alphabet.map((letter) => (
         <Link
           key={letter}
           to={`/browse/${letter}`}
-          className="aspect-square md:aspect-[3/4] bg-[#373E49] hover:bg-[#434B57] border-0 rounded-lg flex items-center justify-center text-2xl font-bold text-white transition-colors"
+          onClick={onLetterClick}
+          className="aspect-[1/1.3] md:aspect-[1/1.6] bg-[#373E49] hover:bg-[#434B57] border-0 rounded-md flex items-center justify-center text-xl md:text-xl font-bold text-white transition-colors"
         >
           {letter}
         </Link>
