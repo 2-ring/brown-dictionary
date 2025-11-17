@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import type { Word } from '../database/db';
 import { getWords } from '../database/db';
 import { WordFeed } from '../components/feed/word-feed';
-import { Button } from '../components/common/button';
 import { Spinner } from '../components/common/spinner';
 
 export const Home = () => {
@@ -29,13 +28,7 @@ export const Home = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <WordFeed words={words} />
-      </div>
-
-      <div className="flex justify-center">
-        <Button variant="outline">More random definitions</Button>
-      </div>
+      <WordFeed words={words} showRandomButton={true} />
     </div>
   );
 };

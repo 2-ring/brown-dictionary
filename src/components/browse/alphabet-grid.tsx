@@ -4,12 +4,12 @@ export const AlphabetGrid = () => {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#'.split('');
 
   return (
-    <div className="grid grid-cols-9 gap-3">
+    <div className="grid grid-cols-7 gap-2">
       {alphabet.map((letter) => (
         <Link
           key={letter}
           to={`/browse/${letter}`}
-          className="aspect-square bg-card-secondary hover:bg-background border border-border rounded flex items-center justify-center text-2xl font-bold text-text transition-colors"
+          className="aspect-square md:aspect-[3/4] bg-[#373E49] hover:bg-[#434B57] border-0 rounded-lg flex items-center justify-center text-2xl font-bold text-white transition-colors"
         >
           {letter}
         </Link>
