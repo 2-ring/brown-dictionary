@@ -6,7 +6,7 @@ import { WordDetail } from './pages/word-detail';
 import { Browse } from './pages/browse';
 import { SearchResults } from './pages/search-results';
 import { AddDefinition } from './pages/add-definition';
-import Login from './pages/login';
+import Auth from './pages/auth';
 import { AuthProvider, useAuth } from './contexts/auth-context';
 import ProtectedRoute from './components/auth/protected-route';
 import { Toaster } from 'sonner';
@@ -14,14 +14,15 @@ import { Spinner } from './components/common/spinner';
 
 function AuthenticatedApp() {
   const location = useLocation();
-  const isLoginPage = location.pathname === '/login';
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
   return (
     <div className="min-h-screen flex flex-col">
-      {!isLoginPage && <Navbar />}
+      {!isAuthPage && <Navbar />}
       <main className="flex-1">
         <Routes>
-          <Route path="/login" element={<LoginRedirect />} />
+          <Route path="/login" element={<AuthRedirect />} />
+          <Route path="/signup" element={<AuthRedirect />} />
           <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/word/:slug" element={<ProtectedRoute><WordDetail /></ProtectedRoute>} />
           <Route path="/browse" element={<ProtectedRoute><Browse /></ProtectedRoute>} />
@@ -30,12 +31,12 @@ function AuthenticatedApp() {
           <Route path="/add" element={<ProtectedRoute><AddDefinition /></ProtectedRoute>} />
         </Routes>
       </main>
-      {!isLoginPage && <Footer />}
+      {!isAuthPage && <Footer />}
     </div>
   );
 }
 
-function LoginRedirect() {
+function AuthRedirect() {
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -50,7 +51,7 @@ function LoginRedirect() {
     return <Navigate to="/" replace />;
   }
 
-  return <Login />;
+  return <Auth />;
 }
 
 function App() {
