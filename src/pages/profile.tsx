@@ -50,18 +50,20 @@ export default function Profile() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-8">
-      <h1 className="text-4xl font-bold text-text mb-2 font-serif">{username}</h1>
-      <p className="text-text-muted mb-8">
-        {words.length} {words.length === 1 ? 'word' : 'words'}
-      </p>
+    <div className="px-6 py-8">
+      <div className="max-w-3xl mx-auto pt-12 pb-6">
+        <h1 className="text-4xl font-bold text-text mb-2 font-serif">{username}</h1>
+        <p className="text-text-muted">
+          {words.length} {words.length === 1 ? 'word' : 'words'}
+        </p>
+      </div>
 
       {words.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-text-muted text-lg">No definitions found for this user.</p>
         </div>
       ) : (
-        <WordFeed words={words} />
+        <WordFeed words={words} showTopPadding={false} />
       )}
     </div>
   );

@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import type { Word } from '../database/db';
-import { getWordBySlug } from '../database/db';
-import { WordCard } from '../components/word/word-card';
-import { Button } from '../components/common/button';
+import { getWordBySlug, getRandomWords } from '../database/db';
+import { WordFeed } from '../components/feed/word-feed';
 import { Spinner } from '../components/common/spinner';
 
 export const WordDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const [word, setWord] = useState<Word | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     const fetchWord = async () => {
@@ -22,6 +22,15 @@ export const WordDetail = () => {
 
     fetchWord();
   }, [slug]);
+
+  const handleLoadMore = async () => {
+    setLoadingMore(true);
+    const randomWords = await getRandomWords(10);
+    setLoadingMore(false);
+    if (randomWords.length > 0) {
+      window.location.href = `/word/${randomWords[0].slug}`;
+    }
+  };
 
   if (loading) {
     return (
@@ -46,13 +55,14 @@ export const WordDetail = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <WordCard word={word} showAllDefinitions={true} />
-      </div>
-
-      <div className="flex justify-center">
-        <Button variant="outline">More random definitions</Button>
-      </div>
+      <WordFeed
+        words={[word]}
+        itemsPerPage={1}
+        showRandomButton={true}
+        onRandomClick={handleLoadMore}
+        isLoadingRandom={loadingMore}
+        showAllDefinitions={true}
+      />
     </div>
   );
 };

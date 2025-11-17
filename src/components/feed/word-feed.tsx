@@ -10,6 +10,8 @@ interface WordFeedProps {
   showRandomButton?: boolean;
   onRandomClick?: () => void;
   isLoadingRandom?: boolean;
+  showTopPadding?: boolean;
+  showAllDefinitions?: boolean;
 }
 
 export const WordFeed = ({
@@ -17,7 +19,9 @@ export const WordFeed = ({
   itemsPerPage = 10,
   showRandomButton = false,
   onRandomClick,
-  isLoadingRandom = false
+  isLoadingRandom = false,
+  showTopPadding = true,
+  showAllDefinitions = false
 }: WordFeedProps) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -42,9 +46,9 @@ export const WordFeed = ({
 
   return (
     <div>
-      <div className="space-y-6 pt-12">
+      <div className={`space-y-6 ${showTopPadding ? 'pt-12' : ''}`}>
         {currentWords.map((word) => (
-          <WordCard key={word.slug} word={word} />
+          <WordCard key={word.slug} word={word} showAllDefinitions={showAllDefinitions} />
         ))}
       </div>
 

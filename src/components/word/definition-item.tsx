@@ -36,7 +36,7 @@ export const DefinitionItem = ({ definition, termSlug, isFirst = false }: Defini
 
       <div className="text-lg text-text font-bold mb-6">
         <span>by </span>
-        <Link to="#" className="text-highlight hover:underline">
+        <Link to={`/profile/${definition.author}`} className="text-highlight hover:underline">
           {definition.author}
         </Link>
         <span> {formatDate(definition.createdAt)}</span>
