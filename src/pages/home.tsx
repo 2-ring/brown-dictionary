@@ -42,7 +42,6 @@ export const Home = () => {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <WordFeed
         words={words}
-        showRandomButton={true}
         onRandomClick={handleLoadMore}
         isLoadingRandom={loadingMore}
       />

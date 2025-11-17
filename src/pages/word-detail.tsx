@@ -58,7 +58,6 @@ export const WordDetail = () => {
       <WordFeed
         words={[word]}
         itemsPerPage={1}
-        showRandomButton={true}
         onRandomClick={handleLoadMore}
         isLoadingRandom={loadingMore}
         showAllDefinitions={true}

@@ -7,7 +7,6 @@ import { MoreRandomButton } from '../common/more-random-button';
 interface WordFeedProps {
   words: Word[];
   itemsPerPage?: number;
-  showRandomButton?: boolean;
   onRandomClick?: () => void;
   isLoadingRandom?: boolean;
   showTopPadding?: boolean;
@@ -17,7 +16,6 @@ interface WordFeedProps {
 export const WordFeed = ({
   words,
   itemsPerPage = 10,
-  showRandomButton = false,
   onRandomClick,
   isLoadingRandom = false,
   showTopPadding = true,
@@ -52,18 +50,18 @@ export const WordFeed = ({
         ))}
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={goToPage}
-      />
-
-      {showRandomButton && (
-        <MoreRandomButton
-          onClick={onRandomClick}
-          isLoading={isLoadingRandom}
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={goToPage}
         />
       )}
+
+      <MoreRandomButton
+        onClick={onRandomClick}
+        isLoading={isLoadingRandom}
+      />
     </div>
   );
 };

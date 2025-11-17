@@ -31,6 +31,9 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
 
   if (totalPages <= 1) return null;
 
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
+
   return (
     <div className="flex flex-col items-center gap-6 mt-12">
       <div className="flex items-center gap-2">
@@ -53,20 +56,39 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
       </div>
 
       <div className="flex items-center gap-4 text-gray-400">
-        <button
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 rounded-full font-bold transition-all hover:bg-blue-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-400"
-        >
-          Next ›
-        </button>
-        <button
-          onClick={() => onPageChange(totalPages)}
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 rounded-full font-bold transition-all hover:bg-blue-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-400"
-        >
-          Last »
-        </button>
+        {!isFirstPage && (
+          <>
+            <button
+              onClick={() => onPageChange(1)}
+              className="px-4 py-2 rounded-full font-bold transition-all hover:bg-blue-600 hover:text-white"
+            >
+              « First
+            </button>
+            <button
+              onClick={() => onPageChange(currentPage - 1)}
+              className="px-4 py-2 rounded-full font-bold transition-all hover:bg-blue-600 hover:text-white"
+            >
+              ‹ Previous
+            </button>
+          </>
+        )}
+
+        {!isLastPage && (
+          <>
+            <button
+              onClick={() => onPageChange(currentPage + 1)}
+              className="px-4 py-2 rounded-full font-bold transition-all hover:bg-blue-600 hover:text-white"
+            >
+              Next ›
+            </button>
+            <button
+              onClick={() => onPageChange(totalPages)}
+              className="px-4 py-2 rounded-full font-bold transition-all hover:bg-blue-600 hover:text-white"
+            >
+              Last »
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getUserDefinitionsByUsername } from '../database/db';
+import { getUserDefinitionsByUsername, getRandomWords } from '../database/db';
 import type { Word } from '../database/db';
 import { WordFeed } from '../components/feed/word-feed';
 import { Spinner } from '../components/common/spinner';
@@ -9,6 +9,7 @@ export default function Profile() {
   const { username } = useParams<{ username: string }>();
   const [words, setWords] = useState<Word[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -30,6 +31,15 @@ export default function Profile() {
 
     loadUserDefinitions();
   }, [username]);
+
+  const handleLoadMore = async () => {
+    setLoadingMore(true);
+    const randomWords = await getRandomWords(10);
+    setLoadingMore(false);
+    if (randomWords.length > 0) {
+      window.location.href = `/word/${randomWords[0].slug}`;
+    }
+  };
 
   if (loading) {
     return (
@@ -63,7 +73,12 @@ export default function Profile() {
           <p className="text-text-muted text-lg">No definitions found for this user.</p>
         </div>
       ) : (
-        <WordFeed words={words} showTopPadding={false} />
+        <WordFeed
+          words={words}
+          showTopPadding={false}
+          onRandomClick={handleLoadMore}
+          isLoadingRandom={loadingMore}
+        />
       )}
     </div>
   );
