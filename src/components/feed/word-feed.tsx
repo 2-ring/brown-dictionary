@@ -1,17 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Word } from '../../database/db';
 import { WordCard } from '../word/word-card';
-import { Button } from '../common/button';
 import { Pagination } from '../common/pagination';
+import { MoreRandomButton } from '../common/more-random-button';
 
 interface WordFeedProps {
   words: Word[];
   itemsPerPage?: number;
   showRandomButton?: boolean;
+  onRandomClick?: () => void;
+  isLoadingRandom?: boolean;
 }
 
-export const WordFeed = ({ words, itemsPerPage = 10, showRandomButton = false }: WordFeedProps) => {
+export const WordFeed = ({
+  words,
+  itemsPerPage = 10,
+  showRandomButton = false,
+  onRandomClick,
+  isLoadingRandom = false
+}: WordFeedProps) => {
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Reset to page 1 when words change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [words]);
 
   const totalPages = Math.ceil(words.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -42,9 +55,10 @@ export const WordFeed = ({ words, itemsPerPage = 10, showRandomButton = false }:
       />
 
       {showRandomButton && (
-        <div className="flex justify-center mt-8">
-          <Button variant="outline">More random definitions</Button>
-        </div>
+        <MoreRandomButton
+          onClick={onRandomClick}
+          isLoading={isLoadingRandom}
+        />
       )}
     </div>
   );

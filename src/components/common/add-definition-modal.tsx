@@ -3,6 +3,7 @@ import { Modal } from './modal';
 import { Button } from './button';
 import { addNewWord } from '../../database/db';
 import { toast } from 'sonner';
+import { useAuth } from '../../contexts/auth-context';
 
 interface AddDefinitionModalProps {
   isOpen: boolean;
@@ -16,16 +17,23 @@ export const AddDefinitionModal = ({ isOpen, onClose }: AddDefinitionModalProps)
     example: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
+      if (!user) {
+        toast.error('You must be signed in to add a word');
+        return;
+      }
+
       await addNewWord({
         term: formData.term,
         definition: formData.definition,
         example: formData.example,
+        author: user.displayName || user.email || 'Anonymous',
       });
 
       toast.success('Word added successfully!');

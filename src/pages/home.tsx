@@ -1,22 +1,34 @@
 import { useEffect, useState } from 'react';
 import type { Word } from '../database/db';
-import { getWords } from '../database/db';
+import { getRandomWords } from '../database/db';
 import { WordFeed } from '../components/feed/word-feed';
 import { Spinner } from '../components/common/spinner';
 
 export const Home = () => {
   const [words, setWords] = useState<Word[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+
+  const fetchRandomWords = async () => {
+    const data = await getRandomWords(10);
+    setWords(data);
+  };
 
   useEffect(() => {
-    const fetchWords = async () => {
-      const data = await getWords();
-      setWords(data);
+    const loadInitialWords = async () => {
+      await fetchRandomWords();
       setLoading(false);
     };
 
-    fetchWords();
+    loadInitialWords();
   }, []);
+
+  const handleLoadMore = async () => {
+    setLoadingMore(true);
+    await fetchRandomWords();
+    setLoadingMore(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   if (loading) {
     return (
@@ -28,7 +40,12 @@ export const Home = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <WordFeed words={words} showRandomButton={true} />
+      <WordFeed
+        words={words}
+        showRandomButton={true}
+        onRandomClick={handleLoadMore}
+        isLoadingRandom={loadingMore}
+      />
     </div>
   );
 };
