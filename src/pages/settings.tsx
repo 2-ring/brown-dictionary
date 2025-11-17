@@ -50,34 +50,18 @@ export default function Settings() {
             Click here to change your handle
           </a>
 
-          {/* Claim definitions */}
-          <div className="text-gray-800 text-base sm:text-lg">
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                toast.info('Claim definitions functionality coming soon');
-              }}
-              className="text-blue-600 hover:underline"
-            >
-              Claim
-            </a>
-            {' '}definitions you wrote under a different email address
-          </div>
-
           {/* See definitions */}
           <div className="text-gray-800 text-base sm:text-lg">
             See all of your{' '}
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                toast.info('View definitions functionality coming soon');
+            <button
+              onClick={() => {
+                const username = user?.displayName || user?.email?.split('@')[0] || 'user';
+                navigate(`/profile/${username}`);
               }}
               className="text-blue-600 hover:underline"
             >
               definitions
-            </a>
+            </button>
           </div>
 
           {/* Sign out */}

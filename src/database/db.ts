@@ -13,12 +13,14 @@ export interface Definition {
   text: string;
   example: string;
   author: string;
+  authorId?: string;
   upvotes: number;
   downvotes: number;
   createdAt: Date;
 }
 
 export interface Word {
+  id?: string;
   term: string;
   slug: string;
   definitions: Definition[];
@@ -61,6 +63,7 @@ export const getWords = async (): Promise<Word[]> => {
   const q = query(wordsRef, orderBy('createdAt', 'desc'));
   const snapshot = await getDocs(q);
   return snapshot.docs.map(doc => ({
+    id: doc.id,
     ...doc.data() as Word,
     createdAt: doc.data().createdAt.toDate(),
     definitions: doc.data().definitions.map((def: any) => ({
@@ -218,4 +221,48 @@ export const submitReport = async (
   };
 
   await addDoc(reportsRef, report);
+};
+
+export const getUserDefinitions = async (userId: string): Promise<Word[]> => {
+  const wordsRef = collection(db, 'words');
+  const snapshot = await getDocs(wordsRef);
+
+  // Filter words that have at least one definition by this user
+  const userWords = snapshot.docs
+    .map(doc => ({
+      id: doc.id,
+      ...doc.data() as Word,
+      createdAt: doc.data().createdAt.toDate(),
+      definitions: doc.data().definitions.map((def: any) => ({
+        ...def,
+        createdAt: def.createdAt.toDate()
+      }))
+    }))
+    .filter(word =>
+      word.definitions.some(def => def.authorId === userId)
+    );
+
+  return userWords;
+};
+
+export const getUserDefinitionsByUsername = async (username: string): Promise<Word[]> => {
+  const wordsRef = collection(db, 'words');
+  const snapshot = await getDocs(wordsRef);
+
+  // Filter words that have at least one definition by this username
+  const userWords = snapshot.docs
+    .map(doc => ({
+      id: doc.id,
+      ...doc.data() as Word,
+      createdAt: doc.data().createdAt.toDate(),
+      definitions: doc.data().definitions.map((def: any) => ({
+        ...def,
+        createdAt: def.createdAt.toDate()
+      }))
+    }))
+    .filter(word =>
+      word.definitions.some(def => def.author.toLowerCase() === username.toLowerCase())
+    );
+
+  return userWords;
 };
